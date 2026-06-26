@@ -1,0 +1,3296 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Brand Favicon Image Tab Link Icon Asset Configuration -->
+    <link rel="icon" type="image/png" href="logo.png">
+    <title>Kat's & Co</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Hardcoded CSS Backup in case Tailwind script gets blocked by your browser/network -->
+    <style>
+      body {
+        background-color: #0f172a !important;
+        color: #f8fafc !important;
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      .grid-layout {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1rem;
+        width: 100%;
+      }
+      .service-card {
+        background-color: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 1rem;
+        padding: 1.25rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 10rem;
+      }
+      .service-card:hover {
+        border-color: #f472b6;
+        box-shadow: 0 0 15px rgba(244, 114, 182, 0.15);
+        transform: translateY(-2px);
+      }
+      .pink-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border-radius: 0.375rem;
+        text-transform: uppercase;
+        width: max-content;
+      }
+      .pink-text {
+        color: #f472b6 !important;
+      }
+      .pink-btn {
+        background-color: #db2777;
+        color: white;
+        border: none;
+        font-weight: 700;
+        padding: 1rem;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        transition: background 0.2s;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        box-shadow: 0 4px 14px rgba(219, 39, 119, 0.3);
+      }
+      .pink-btn:hover {
+        background-color: #be185d;
+      }
+      .cart-row {
+        background-color: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        width: 100%;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 10px;
+      }
+
+      /* ================================================================= */
+      /* FIXED HIGH-PERFORMANCE ISOLATED PRINT ENGINE                      */
+      /* ================================================================= */
+      @media print {
+        @page {
+          size: portrait;
+          margin: 0 !important; /* Managed cleanly via structural container paddings */
+        }
+      }
+
+      @media print {
+        /* PHASE 1: FORCE ABSOLUTE DESTRUCTION OF ALL STANDARD INTERFACES & BUTTONS */
+        aside,
+        header,
+        nav,
+        #panel-view-pos,
+        #panel-view-calendar,
+        #panel-view-cashier,
+        #category-filters-container,
+        .swal2-container,
+        button,
+        input,
+        select,
+        textarea,
+        .pink-btn,
+        #receipt-modal-overlay button,
+        #receipt-modal-overlay h3,
+        .flex.justify-between.items-center.pb-2,
+        .grid.grid-cols-2.gap-3.shrink-0 {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          height: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        /* ----------------------------------------------------------------- */
+        /* CONDITION A: THERMAL PRINTER ROLL OUTPUT MODE (58mm/80mm)         */
+        /* ----------------------------------------------------------------- */
+        body.thermal-print-mode {
+          background: #ffffff !important;
+          color: #000000 !important;
+          font-family: monospace !important;
+          padding: 2mm !important; /* Compact edge buffers */
+          width: 72mm !important;
+          display: block !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
+
+        /* CRITICAL FIXED THERMAL BLOCK: Completely strips dark modal overlay backdrops & hides buttons row container */
+        body.thermal-print-mode #receipt-modal-overlay {
+          display: block !important;
+          position: static !important; /* Removes high-z layer fixed stack blocking rules */
+          background: transparent !important;
+          box-shadow: none !important;
+          width: 100% !important;
+          height: auto !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+
+        /* Forces everything inside the modal container layout box wrapper to stay invisible EXCEPT the receipt body */
+        body.thermal-print-mode #receipt-modal-overlay > div {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          max-width: 100% !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+
+        body.thermal-print-mode #print-thermal-receipt-hardware-footprint,
+        body.thermal-print-mode #print-thermal-receipt-hardware-footprint * {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+        body.thermal-print-mode
+          #print-thermal-receipt-hardware-footprint
+          table {
+          display: table !important;
+          width: 100% !important;
+        }
+        body.thermal-print-mode
+          #print-thermal-receipt-hardware-footprint
+          thead {
+          display: table-header-group !important;
+        }
+        body.thermal-print-mode
+          #print-thermal-receipt-hardware-footprint
+          tbody {
+          display: table-row-group !important;
+        }
+        body.thermal-print-mode #print-thermal-receipt-hardware-footprint tr {
+          display: table-row !important;
+        }
+        body.thermal-print-mode #print-thermal-receipt-hardware-footprint th,
+        body.thermal-print-mode #print-thermal-receipt-hardware-footprint td {
+          display: table-cell !important;
+        }
+
+        /* DOUBLE ISOLATION GUARD: Strips out Corporate A4 Report elements completely if Thermal is active */
+        body.thermal-print-mode #print-report-layout-shell,
+        body.thermal-print-mode #print-report-layout-shell * {
+          display: none !important;
+        }
+
+        /* ----------------------------------------------------------------- */
+        /* CONDITION B: CORPORATE AUDIT MANAGER REPORT MODE (A4 PORTRAIT)    */
+        /* ----------------------------------------------------------------- */
+        body:not(.thermal-print-mode) {
+          background: #ffffff !important;
+          color: #000000 !important;
+          font-family: "Helvetica Neue", Arial, sans-serif !important;
+          display: block !important;
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
+
+        /* DOUBLE ISOLATION GUARD: Strips out Thermal components completely if A4 Report is active */
+        body:not(.thermal-print-mode) #receipt-modal-overlay,
+        body:not(.thermal-print-mode) #receipt-modal-overlay * {
+          display: none !important;
+        }
+
+        /* Structure and force visibility for the Corporate A4 Layout Elements */
+        body:not(.thermal-print-mode) #print-report-layout-shell,
+        body:not(.thermal-print-mode) #print-report-layout-shell * {
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell {
+          padding-left: 25mm !important; /* Space allocation for folder binder ring holes */
+          padding-right: 15mm !important;
+          padding-top: 15mm !important;
+          padding-bottom: 15mm !important;
+          box-sizing: border-box !important;
+          width: 100% !important;
+          height: auto !important;
+          /* FIXED A4 BLANK PAGE OVERFLOW: Removes hard margin bounds pushing blank blocks */
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell table {
+          display: table !important;
+          width: 100% !important;
+          border-collapse: collapse !important;
+          table-layout: fixed !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell thead {
+          display: table-header-group !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell tbody {
+          display: table-row-group !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell tr {
+          display: table-row !important;
+          page-break-inside: avoid !important;
+        }
+        body:not(.thermal-print-mode) #print-report-layout-shell th,
+        body:not(.thermal-print-mode) #print-report-layout-shell td {
+          display: table-cell !important;
+        }
+
+        /* Typography & Table Architecture Styles */
+        .print-header {
+          display: flex !important;
+          flex-direction: row !important;
+          justify-content: space-between !important;
+          align-items: flex-start !important;
+          width: 100% !important;
+          margin-bottom: 5px !important;
+        }
+        .print-header h1 {
+          font-size: 15px !important;
+          font-weight: 800 !important;
+          margin: 0 0 3px 0 !important;
+          color: #0f172a !important;
+          letter-spacing: -0.01em !important;
+        }
+        .print-header p {
+          font-size: 10px !important;
+          color: #475569 !important;
+          margin: 0 !important;
+          font-weight: 500 !important;
+        }
+        .print-meta-right {
+          text-align: right !important;
+          font-size: 10px !important;
+          color: #334155 !important;
+          line-height: 1.4 !important;
+          display: block !important;
+        }
+        .print-divider {
+          border-top: 1.5px solid #0f172a !important;
+          margin: 12px 0 !important;
+          width: 100% !important;
+          display: block !important;
+        }
+        .print-section-title {
+          font-size: 11px !important;
+          font-weight: 700;
+          text-transform: uppercase !important;
+          margin: 25px 0 8px 0 !important;
+          color: #0f172a !important;
+          border-left: 3px solid #0f172a !important;
+          padding-left: 6px !important;
+          letter-spacing: 0.05em !important;
+          display: block !important;
+        }
+        .print-data-table th {
+          background-color: #f8fafc !important;
+          border: 1px solid #cbd5e1 !important;
+          color: #0f172a !important;
+          font-size: 9px !important;
+          font-weight: 700 !important;
+          text-transform: uppercase !important;
+          padding: 6px 8px !important;
+        }
+        .print-data-table td {
+          border: 1px solid #e2e8f0 !important;
+          padding: 6px 8px !important;
+          font-size: 9.5px !important;
+          color: #1e293b !important;
+          line-height: 1.4 !important;
+          vertical-align: top !important;
+          word-wrap: break-word !important;
+          white-space: normal !important;
+        }
+        .print-channels-bar {
+          margin: 15px 0 !important;
+          font-size: 10px !important;
+          color: #475569 !important;
+          text-align: center !important;
+          width: 100% !important;
+          font-weight: 500 !important;
+          display: block !important;
+        }
+        .preserve-newlines {
+          white-space: pre-line !important;
+          display: block !important;
+        }
+        .print-signature-container {
+          display: flex !important;
+          flex-direction: row !important;
+          justify-content: space-between !important;
+          margin-top: 55px !important;
+          page-break-inside: avoid !important;
+          width: 100% !important;
+        }
+        .print-signature-block {
+          width: 42% !important;
+          text-align: center !important;
+          display: inline-block !important;
+        }
+        .print-signature-block .line {
+          border-top: 1px solid #64748b !important;
+          margin-bottom: 6px !important;
+          width: 100% !important;
+          display: block !important;
+        }
+        .print-signature-block p {
+          font-size: 9px !important;
+          color: #475569 !important;
+          margin: 0 !important;
+          font-weight: 600 !important;
+          display: block !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-950 text-slate-100 antialiased h-screen flex overflow-hidden font-sans">
+    <!-- Persistent Left Sidebar Navigation Shell -->
+    <aside
+      class="w-64 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 h-full select-none">
+      <!-- Logo Branding Header (Local Folder Path Setup) -->
+      <div class="p-6 border-b border-slate-800 flex items-center gap-3">
+        <!-- Circular frame holding your brand logo image -->
+        <div
+          class="w-10 h-10 rounded-xl overflow-hidden shadow-md shrink-0 bg-slate-800 flex items-center justify-center border border-slate-700">
+          <img
+            src="logo.png"
+            alt="Kat's & Co. Logo"
+            class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <h1 class="text-md font-bold tracking-tight text-white">
+            Kat's & Co.
+          </h1>
+          <p
+            class="text-[10px] text-pink-400 font-semibold tracking-wider uppercase">
+            Beauty & Wellness Hub
+          </p>
+        </div>
+      </div>
+
+      <nav class="flex-1 p-4 flex flex-col gap-1">
+        <button
+          onclick="switchView('pos')"
+          id="nav-pos"
+          class="w-full text-left font-bold text-sm px-4 py-3 rounded-xl cursor-pointer transition flex items-center gap-3 bg-pink-600 text-white">
+          <i data-lucide="shopping-cart" class="w-4 h-4"></i> Point of Sale
+        </button>
+        <button
+          onclick="switchView('calendar')"
+          id="nav-calendar"
+          class="w-full text-left font-semibold text-sm px-4 py-3 rounded-xl cursor-pointer transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+          <i data-lucide="calendar" class="w-4 h-4"></i> Calendar of Bookings
+        </button>
+        <button
+          onclick="switchView('cashier')"
+          id="nav-cashier"
+          class="w-full text-left font-semibold text-sm px-4 py-3 rounded-xl cursor-pointer transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-slate-200">
+          <i data-lucide="calculator" class="w-4 h-4"></i> Cashier Form
+        </button>
+      </nav>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-900/50">
+        <div
+          class="bg-slate-950 rounded-xl p-3 border border-slate-800 flex items-center justify-between">
+          <div>
+            <p class="text-[10px] font-bold text-slate-500 uppercase">
+              Drawer Session
+            </p>
+            <p
+              id="drawer-session-status"
+              class="text-xs font-bold text-rose-400">
+              🚨 Session Closed
+            </p>
+          </div>
+          <div
+            class="w-2.5 h-2.5 rounded-full bg-rose-500"
+            id="drawer-status-dot"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Dynamic Interface Portal Area -->
+    <div
+      class="flex-1 flex flex-col min-w-0 overflow-hidden h-full bg-slate-950">
+      <!-- Shared Header Bar -->
+      <header
+        class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex justify-between items-center shrink-0">
+        <div>
+          <h2
+            id="view-title-display"
+            class="text-lg font-bold text-white tracking-tight">
+            Point of Sale
+          </h2>
+          <p id="view-subtitle-display" class="text-xs text-slate-400">
+            Process front-counter service checkout transactions
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span
+            id="current-date-display"
+            class="text-xs font-mono bg-slate-950 px-2.5 py-1 rounded border border-slate-800 text-slate-400"
+            >06/16/2026</span
+          >
+          <div
+            class="w-8 h-8 bg-pink-600/10 text-pink-400 rounded-full border border-pink-500/20 flex items-center justify-center font-bold text-xs">
+            ST
+          </div>
+        </div>
+      </header>
+      <!-- Multi-View Routing Panels Content Boxes Container -->
+      <div class="flex-1 flex min-h-0 relative w-full h-full">
+        <!-- VIEW 1: POINT OF SALE TERMINAL PANEL -->
+        <div
+          id="panel-view-pos"
+          class="absolute inset-0 flex min-h-0 w-full h-full">
+          <!-- Left Side Service Menu Grid Container -->
+          <section
+            class="flex-1 p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6 bg-slate-950">
+            <div
+              id="category-filters-container"
+              class="flex gap-2 overflow-x-auto pb-2 shrink-0 select-none"></div>
+
+            <div id="services-grid" class="grid-layout">
+              <!-- Pulse loading skeleton placeholder states -->
+              <div
+                class="service-card border border-slate-700/50 bg-slate-800/40 animate-pulse flex flex-col justify-between h-40">
+                <div>
+                  <div class="h-4 bg-slate-700 rounded-sm w-16 mb-3"></div>
+                  <div class="h-5 bg-slate-700 rounded-sm w-3/4"></div>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                  <div class="h-6 bg-slate-700 rounded-sm w-24"></div>
+                  <div class="w-8 h-8 bg-slate-700 rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right Side Sidebar Terminal Checkout Panel Container -->
+          <!-- Right Side Sidebar Terminal Checkout Panel Container (Optimized Layout) -->
+          <aside
+            class="w-96 bg-slate-900 border-l border-slate-800 flex flex-col overflow-hidden shrink-0 shadow-2xl h-full">
+            <!-- Top Fixed Header Bar -->
+            <div
+              class="p-4 border-b border-slate-700/60 bg-slate-900 flex justify-between items-center shrink-0 shadow-sm">
+              <h2
+                class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                <i data-lucide="shopping-bag" class="w-4 h-4 pink-text"></i>
+                Checkout Console
+              </h2>
+              <button
+                onclick="clearCart()"
+                class="text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1 bg-transparent border-none cursor-pointer">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                Clear Cart
+              </button>
+            </div>
+
+            <!-- Unified Master Scrollable Workbox (Combines Customer Meta + Items Rows) -->
+            <div
+              class="flex-1 overflow-y-auto custom-scrollbar p-5 flex flex-col gap-5">
+              <!-- Block A: Customer Information Metadata Group -->
+              <div
+                class="flex flex-col gap-3.5 bg-slate-950/40 border border-slate-800/80 p-4 rounded-xl shadow-inner">
+                <span
+                  class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5 mb-1">
+                  <i data-lucide="user" class="w-3 h-3 text-pink-500"></i>
+                  Client Information
+                </span>
+                <div>
+                  <label
+                    class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                    >Customer Name (Optional)</label
+                  >
+                  <input
+                    id="customer-name"
+                    type="text"
+                    placeholder="Jane Doe"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg text-sm px-3 py-2 text-slate-200 focus:outline-none focus:border-pink-500" />
+                </div>
+                <div>
+                  <label
+                    class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                    >Customer Type</label
+                  >
+                  <select
+                    id="customer-type"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg text-sm px-3 py-2 text-slate-200 focus:outline-none focus:border-pink-500 cursor-pointer">
+                    <option value="Walk-In Client">Walk-In Client</option>
+                    <option value="VIP Loyalty Member">
+                      VIP Loyalty Member
+                    </option>
+                    <option value="Prior Appointment">Prior Appointment</option>
+                  </select>
+                </div>
+                <div>
+                  <label
+                    class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                    >Billing Address (Optional)</label
+                  >
+                  <input
+                    id="customer-address"
+                    type="text"
+                    placeholder="Manila, Philippines"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg text-sm px-3 py-2 text-slate-200 focus:outline-none focus:border-pink-500" />
+                </div>
+                <div>
+                  <label
+                    class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1"
+                    >Sales Notes / Customer Requests</label
+                  >
+                  <input
+                    id="sales-notes"
+                    type="text"
+                    placeholder="e.g., Prefers light pressure"
+                    class="w-full bg-slate-950 border border-slate-700 rounded-lg text-sm px-3 py-2 text-slate-200 focus:outline-none focus:border-pink-500" />
+                </div>
+              </div>
+
+              <!-- Block B: Dynamic Added Items List Container -->
+              <div class="flex flex-col gap-2.5">
+                <span
+                  class="text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5 mb-1">
+                  <i data-lucide="receipt" class="w-3 h-3 text-pink-500"></i>
+                  Selected Services Menu
+                </span>
+
+                <!-- Wrapper target where items rows generate -->
+                <div
+                  id="cart-items"
+                  class="flex flex-col gap-2.5 min-h-[100px]">
+                  <div
+                    id="cart-empty"
+                    class="py-10 flex flex-col items-center justify-center text-center text-slate-500 bg-slate-950/20 border border-dashed border-slate-800 rounded-xl">
+                    <i
+                      data-lucide="shopping-bag"
+                      class="w-8 h-8 stroke-1 mb-2 text-slate-600"></i>
+                    <p class="text-xs font-semibold text-slate-400">
+                      Terminal Cart Empty
+                    </p>
+                    <p class="text-[11px] text-slate-500 mt-0.5">
+                      Click catalog items to start order
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Fixed Calculator Breakdown Footer -->
+            <div
+              class="p-5 border-t border-slate-700 bg-slate-900/80 flex flex-col gap-4 shrink-0 mt-auto shadow-2xl">
+              <div
+                class="flex justify-between items-center text-xs text-slate-400 font-medium">
+                <span>Subtotal</span
+                ><span
+                  id="summary-subtotal"
+                  class="text-slate-200 font-bold tracking-wide"
+                  >₱0.00</span
+                >
+              </div>
+              <div
+                class="flex justify-between items-center text-xs text-slate-400 font-medium">
+                <span>Discount (₱)</span
+                ><input
+                  id="summary-discount"
+                  type="number"
+                  value="0"
+                  min="0"
+                  oninput="calculateTotals()"
+                  class="w-28 bg-slate-950 border border-slate-700 rounded-lg text-right px-3 py-1.5 text-xs text-slate-100 font-bold focus:outline-none focus:border-pink-500 shadow-inner" />
+              </div>
+              <div
+                class="flex justify-between items-center gap-2 text-xs text-slate-400 font-medium">
+                <span>Payment Method</span>
+                <select
+                  id="payment-method"
+                  class="bg-slate-950 border border-slate-700 rounded-lg text-xs px-3 py-1.5 font-semibold text-slate-200 focus:outline-none focus:border-pink-500 cursor-pointer">
+                  <option value="Cash">💵 Cash</option>
+                  <option value="GCash">🔵 GCash</option>
+                  <option value="Maya">🟢 Maya</option>
+                  <option value="Card">💳 Card</option>
+                </select>
+              </div>
+              <div class="border-t border-slate-800/80 my-0.5"></div>
+              <div class="flex justify-between items-center py-1">
+                <span
+                  class="text-xs font-black text-slate-400 uppercase tracking-widest"
+                  >Total Bill</span
+                ><span
+                  id="summary-net"
+                  class="text-2xl font-black pink-text tracking-tight"
+                  >₱0.00</span
+                >
+              </div>
+              <button
+                onclick="triggerCheckout()"
+                id="btn-checkout"
+                class="pink-btn py-3.5 rounded-xl font-bold transition flex items-center justify-center gap-2 select-none">
+                <i data-lucide="check-circle" class="w-4 h-4"></i>
+                Complete Sale & Log
+              </button>
+            </div>
+          </aside>
+        </div>
+
+        <!-- VIEW 2: CALENDAR PANEL HOLDER -->
+        <!-- VIEW 2: CALENDAR PANEL HOLDER (ALIGNED WITH MONTHLY MASTER DASHBOARD MOCK) -->
+        <div
+          id="panel-view-calendar"
+          class="absolute inset-0 hidden p-6 overflow-y-auto bg-slate-950 w-full h-full flex flex-col md:flex-row gap-6 custom-scrollbar">
+          <!-- LEFT SIDEBOARD: CORE FULL-MONTH GRID ARCHITECTURE -->
+          <div
+            class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col gap-4 shadow-xl h-full min-h-0">
+            <!-- Calendar Grid Upper Action Control Row Header -->
+            <div class="flex justify-between items-center pb-2">
+              <div>
+                <h3
+                  id="calendar-month-year-title"
+                  class="text-base font-black text-slate-100 tracking-tight">
+                  June 2026
+                </h3>
+              </div>
+              <div
+                class="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-lg p-1 select-none">
+                <button
+                  onclick="shiftCalendarMonth(-1)"
+                  class="p-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
+                  <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                </button>
+                <button
+                  onclick="jumpCalendarToCurrentToday()"
+                  class="text-[10px] font-bold px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-md transition cursor-pointer">
+                  Today
+                </button>
+                <button
+                  onclick="shiftCalendarMonth(1)"
+                  class="p-1.5 text-slate-400 hover:text-slate-200 cursor-pointer">
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Days of Week Headers Row Split -->
+            <div
+              class="grid grid-cols-7 text-center text-[10px] font-bold text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 shrink-0">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span
+              ><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+
+            <!-- Dynamic Month Cells Loading Target Grid Matrix -->
+            <div
+              id="calendar-monthly-days-matrix"
+              class="flex-1 grid grid-cols-7 gap-2 overflow-y-auto custom-scrollbar min-h-[300px]">
+              <!-- 35 or 42 layout boxes inject dynamically via script execution loops -->
+            </div>
+
+            <!-- Lower Taxonomy Badges Status Guide Row -->
+            <div
+              class="flex items-center gap-4 text-[10px] font-bold text-slate-500 uppercase tracking-wider border-t border-slate-800 pt-3 shrink-0 select-none">
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                Appointments
+              </div>
+              <!-- <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Completed
+              </div> -->
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-pink-500"></span> POS Sale
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBOARD: TARGET CONTEXT APPOINTMENT & TRANSACTIONS BREAKDOWN PANEL -->
+          <aside
+            class="w-full md:w-80 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col gap-4 shadow-xl shrink-0 h-full overflow-hidden">
+            <div
+              class="flex justify-between items-start border-b border-slate-800 pb-3 shrink-0">
+              <div>
+                <h4
+                  id="side-panel-selected-date-lbl"
+                  class="text-sm font-black text-rose-400 tracking-tight">
+                  Tuesday, June 16, 2026
+                </h4>
+                <p
+                  id="side-panel-summary-sub-lbl"
+                  class="text-[10px] text-slate-500 font-semibold mt-0.5">
+                  0 appointments • 0 sales
+                </p>
+              </div>
+              <button
+                onclick="triggerNewBookingModalPrompt()"
+                class="bg-pink-600 hover:bg-pink-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-md shadow-pink-900/20 transition cursor-pointer">
+                <i data-lucide="plus" class="w-3 h-3"></i> Book
+              </button>
+            </div>
+
+            <!-- Scrollable Context Slices Container Wrapper -->
+            <div
+              class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-4 pr-1 min-h-[200px]"
+              id="side-panel-records-scroller">
+              <!-- Direct operational transaction logs map indicators render here -->
+            </div>
+
+            <!-- Bottom Cumulative Card Summary Totalizer -->
+            <div
+              class="bg-slate-950 border border-slate-800 rounded-xl p-3.5 flex justify-between items-baseline shrink-0 mt-auto select-none">
+              <span
+                class="text-[10px] font-bold text-slate-400 uppercase tracking-wider"
+                >Total</span
+              >
+              <span
+                id="side-panel-calculated-total-lbl"
+                class="text-base font-black text-pink-500 tracking-tight"
+                >₱0.00</span
+              >
+            </div>
+          </aside>
+        </div>
+
+        <!-- VIEW 3: CASHIER FORM DESIGN PANEL (ALIGNED WITH DESIGN MOCK) -->
+        <div
+          id="panel-view-cashier"
+          class="absolute inset-0 hidden p-6 overflow-y-auto bg-slate-950 custom-scrollbar w-full h-full flex flex-col gap-6">
+          <!-- ROW 1: TOP CONTROL MENU & ACTIONS BAR -->
+          <div
+            class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center bg-slate-900 border border-slate-800 p-4 rounded-xl shrink-0">
+            <div class="flex flex-wrap items-center gap-4">
+              <div>
+                <label
+                  class="block text-[10px] font-bold text-slate-500 uppercase mb-1"
+                  >Select Ledger Date</label
+                >
+                <div
+                  class="flex items-center gap-1.5 bg-slate-950 border border-slate-800 rounded-lg p-1">
+                  <button
+                    onclick="adjustLedgerDate(-1)"
+                    class="p-1 text-slate-400 hover:text-slate-200 cursor-pointer">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                  </button>
+                  <input
+                    id="ledger-date-picker"
+                    type="date"
+                    value="2026-06-16"
+                    onchange="fetchDayLedgerRecords()"
+                    class="bg-transparent border-none text-xs text-slate-200 font-bold focus:outline-none px-1" />
+                  <button
+                    onclick="adjustLedgerDate(1)"
+                    class="p-1 text-slate-400 hover:text-slate-200 cursor-pointer">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- UPDATED: READ-ONLY OPENING CAPITAL LABEL AND ADMIN BUTTON -->
+              <div>
+                <label
+                  class="block text-[10px] font-bold text-slate-500 uppercase mb-1"
+                  >Cashbox (Start of Day)</label
+                >
+                <div class="flex items-center gap-2">
+                  <div
+                    class="bg-slate-950 border border-slate-800 text-slate-200 text-xs font-black px-3 py-1.5 rounded-lg select-none min-w-[7rem]"
+                    id="display-cashbox-start">
+                    ₱0.00
+                  </div>
+                  <button
+                    onclick="triggerAdminCashboxOverridePrompt()"
+                    class="text-xs border border-slate-700 hover:bg-slate-800 text-slate-300 font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1 cursor-pointer">
+                    <i
+                      data-lucide="shield-check"
+                      class="w-3.5 h-3.5 text-pink-400"></i>
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                onclick="executeReportPrintJob()"
+                class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold px-4 py-2.5 rounded-lg flex items-center gap-1.5 cursor-pointer">
+                <i data-lucide="printer" class="w-4 h-4"></i> Print Report
+              </button>
+            </div>
+          </div>
+
+          <!-- ROW 2: LIVE STRATEGIC FINANCIAL CARDS (ALWAYS VISIBLE ON TOP) -->
+                <!-- ROW 2: LIVE STRATEGIC FINANCIAL CARDS (FLUID RESPONSIVE DESIGN) -->
+                <div class="flex flex-wrap md:grid md:grid-cols-12 gap-4 shrink-0 select-none w-full">
+                    
+                    <!-- Card 1: Opening Capital Box Balance -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-3 shadow-md flex-1 min-w-[160px] md:col-span-2 overflow-hidden">
+                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-slate-400 shrink-0">
+                            <i data-lucide="coins" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider truncate">Opening Capital</p>
+                            <h4 id="summary-lbl-start" class="text-sm sm:text-base md:text-lg font-black text-slate-100 mt-0.5 truncate break-all">₱0.00</h4>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Gross Digital & Cash Collections Total -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-3 shadow-md flex-1 min-w-[240px] md:col-span-4 overflow-hidden">
+                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-pink-400 shrink-0">
+                            <i data-lucide="banknote" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider truncate">Total Sales (Grand)</p>
+                            <h4 id="summary-lbl-grand" class="text-sm sm:text-base md:text-lg font-black text-pink-500 mt-0.5 truncate break-all">₱0.00</h4>
+                            <!-- Fluid sub-badge layout rows wrap cleanly on mobile/tablet widths -->
+                            <div class="flex flex-wrap gap-x-2 gap-y-0.5 mt-1 text-[8.5px] font-bold text-slate-500">
+                                <span class="whitespace-nowrap">💵 C: <span id="summary-lbl-cash" class="text-slate-300">₱0</span></span>
+                                <span class="whitespace-nowrap">🔵 G: <span id="summary-lbl-gcash" class="text-slate-300">₱0</span></span>
+                                <span class="whitespace-nowrap">🟢 M: <span id="summary-lbl-maya" class="text-slate-300">₱0</span></span>
+                                <span class="whitespace-nowrap">💳 Card: <span id="summary-lbl-card" class="text-slate-300">₱0</span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Real-Time Expenses Cash Vouchers Out -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex items-center gap-3 shadow-md flex-1 min-w-[160px] md:col-span-2 overflow-hidden">
+                        <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 text-rose-400 shrink-0">
+                            <i data-lucide="receipt-text" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider truncate">Vouchers Out</p>
+                            <h4 id="summary-lbl-expenses" class="text-sm sm:text-base md:text-lg font-black text-rose-400 mt-0.5 truncate break-all">-₱0.00</h4>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Expected Live Cash In Drawer Box -->
+                    <div class="bg-pink-600/10 border border-pink-500/20 rounded-xl p-4 flex items-center gap-3 shadow-lg flex-1 min-w-[160px] md:col-span-2 overflow-hidden">
+                        <div class="bg-pink-600 text-white p-2.5 rounded-xl shadow-md shrink-0">
+                            <i data-lucide="vault" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[9px] font-bold text-pink-400 uppercase tracking-wider truncate">Live Cash In Box</p>
+                            <h4 id="summary-lbl-box-cash" class="text-sm sm:text-base md:text-lg font-black text-white mt-0.5 truncate break-all">₱0.00</h4>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: Net Available System Funds -->
+                    <div class="bg-indigo-600/10 border border-indigo-500/20 rounded-xl p-4 flex items-center gap-3 shadow-lg flex-1 min-w-[160px] md:col-span-2 overflow-hidden">
+                        <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md shrink-0">
+                            <i data-lucide="piggy-bank" class="w-4 h-4"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-[9px] font-bold text-indigo-400 uppercase tracking-wider truncate">Net Available Funds</p>
+                            <h4 id="summary-lbl-net-funds" class="text-sm sm:text-base md:text-lg font-black text-white mt-0.5 truncate break-all">₱0.00</h4>
+                        </div>
+                    </div>
+
+                </div>
+
+          <!-- ROW 3: REARRANGED MULTI-COLUMN WORKSPACE DETAILS LAYOUT -->
+          <div
+            class="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start min-h-0">
+            <!-- Left Workspace Block Columns (Expanded Transactions Matrix) -->
+            <div
+              class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xs flex flex-col min-h-0 h-full">
+              <h3
+                class="text-sm font-bold text-slate-100 flex items-center gap-2 mb-4 shrink-0">
+                <i data-lucide="activity" class="w-4 h-4 pink-text"></i>
+                Transactions Ledger —
+                <span id="ledger-date-title" class="text-slate-400 font-medium"
+                  >Tuesday, June 16, 2026</span
+                >
+              </h3>
+              <div
+                class="flex-1 overflow-auto w-full custom-scrollbar min-h-[250px]">
+                <table class="w-full text-left border-collapse min-w-[550px]">
+                  <thead>
+                    <tr
+                      class="border-b border-slate-800 text-[11px] font-bold text-slate-500 uppercase tracking-wider sticky top-0 bg-slate-900 z-10">
+                      <th class="pb-3 w-8">#</th>
+                      <th class="pb-3 w-16">Time</th>
+                      <th class="pb-3">Customer</th>
+                      <th class="pb-3">Service(s) Rendered</th>
+                      <th class="pb-3 text-right">Amount</th>
+                      <th class="pb-3 pl-6">Payment</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    id="ledger-transactions-table-body"
+                    class="text-xs text-slate-300 divide-y divide-slate-800/40">
+                    <!-- Rows generate dynamically here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Right Workspace Block Columns (Cash Vouchers + Daily Notes) -->
+            <div
+              class="flex flex-col gap-6 h-full min-h-0 overflow-y-auto custom-scrollbar">
+              <!-- Block A: Cash Voucher List Panel Container -->
+              <div
+                class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xs shrink-0">
+                <div class="flex justify-between items-center mb-4">
+                  <h3
+                    class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                    <i data-lucide="wallet" class="w-4 h-4 text-rose-400"></i>
+                    Cash Voucher List
+                  </h3>
+                  <button
+                    onclick="triggerExpenseInputModalPrompt()"
+                    class="text-[11px] pink-text font-bold hover:underline bg-transparent border-none cursor-pointer flex items-center gap-0.5">
+                    <i data-lucide="plus" class="w-3 h-3"></i> Add Voucher
+                  </button>
+                </div>
+                <div
+                  id="ledger-expenses-list-container"
+                  class="flex flex-col gap-2.5 min-h-[60px] justify-center text-center">
+                  <!-- Expenses load here dynamically -->
+                </div>
+                <div
+                  class="border-t border-slate-800/80 mt-4 pt-3 flex justify-between items-center text-xs">
+                  <span class="font-bold text-slate-400"
+                    >Total Vouchers Amount</span
+                  >
+                  <span
+                    id="summary-voucher-expense-total"
+                    class="font-black text-rose-500 text-sm"
+                    >₱0.00</span
+                  >
+                </div>
+              </div>
+
+              <!-- Block B: General Day Comments Text Entry Block Container -->
+              <div
+                class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xs flex flex-col flex-1 min-h-[180px]">
+                <h3
+                  class="text-sm font-bold text-slate-100 flex items-center gap-2 mb-3 shrink-0">
+                  <i
+                    data-lucide="sticky-note"
+                    class="w-4 h-4 text-amber-400"></i>
+                  Daily Shift Remarks Notes
+                </h3>
+                <textarea
+                  id="input-ledger-notes"
+                  placeholder="Optional notes for the day. Add any additional information or special instructions..."
+                  class="w-full flex-1 bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-pink-500 shadow-inner custom-scrollbar resize-none min-h-[100px]"></textarea>
+
+                <div class="flex justify-end gap-2 mt-4 shrink-0">
+                  <button
+                    onclick="saveDailyLedgerRecordToCloud()"
+                    class="text-xs bg-pink-600 hover:bg-pink-700 text-white font-bold px-4 py-2.5 rounded-lg flex items-center gap-1.5 shadow-md shadow-pink-900/20 cursor-pointer">
+                    <i data-lucide="save" class="w-4 h-4"></i> Save Record
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- RESTORED CORPORATE A4 FINANCIAL AUDIT PRINT LAYOUT SHELL          -->
+    <!-- ================================================================= -->
+    <div id="print-report-layout-shell" class="hidden">
+      <!-- Corporate A4 Page Header Branding -->
+      <div class="print-header">
+        <div>
+          <h1
+            style="
+              font-size: 16px;
+              font-weight: 800;
+              margin: 0 0 3px 0;
+              color: #0f172a;
+              letter-spacing: -0.01em;
+            ">
+            KAT'S & CO. BEAUTY & WELLNESS HUB
+          </h1>
+          <p
+            style="
+              font-size: 10px;
+              color: #475569;
+              margin: 0;
+              font-weight: 500;
+            ">
+            Daily Operations Financial Audit Report Ledger
+          </p>
+        </div>
+        <div class="print-meta-right">
+          <p>
+            <strong>Ledger Date:</strong>
+            <span id="print-lbl-ledger-date">--</span>
+          </p>
+          <p>
+            <strong>Report Generated:</strong>
+            <span id="print-lbl-generated-time">--</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="print-divider"></div>
+
+      <!-- NEW SUBSECTION: TABULATED FINANCIAL SUMMARY STATEMENT SHEET -->
+      <div class="print-section-title">
+        I. Shift Session Financial Balance Sheet Summary
+      </div>
+      <table
+        class="print-data-table statement-table"
+        style="margin-bottom: 20px">
+        <thead>
+          <tr>
+            <th>Opening Capital (Start)</th>
+            <th>Gross Sales Total</th>
+            <th>Cash Vouchers Deductions</th>
+            <th style="background-color: #f1f5f9 !important">
+              Expected Net Cash in Box
+            </th>
+            <th style="background-color: #f0fdf4 !important">
+              Cumulative Net Funds
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: 11px !important;
+            ">
+            <td id="print-tab-start" style="padding: 10px 8px">₱0.00</td>
+            <td id="print-tab-sales" style="padding: 10px 8px; color: #db2777">
+              ₱0.00
+            </td>
+            <td
+              id="print-tab-expenses"
+              style="padding: 10px 8px; color: #dc2626">
+              -₱0.00
+            </td>
+            <td
+              id="print-tab-cashbox"
+              style="
+                padding: 10px 8px;
+                font-weight: 900;
+                background-color: #f1f5f9 !important;
+              ">
+              ₱0.00
+            </td>
+            <td
+              id="print-tab-netfunds"
+              style="
+                padding: 10px 8px;
+                font-weight: 900;
+                background-color: #f0fdf4 !important;
+                color: #16a34a;
+              ">
+              ₱0.00
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Micro Sales Channels Distribution Breakdown Row (Centered Layout) -->
+      <!-- Section I-B: Tabulated Payment Channels Distribution Breakdown Matrix -->
+      <table
+        class="print-data-table breakdown-table"
+        style="margin-bottom: 25px; border-style: dashed !important">
+        <thead>
+          <tr style="font-size: 8px !important; color: #475569 !important">
+            <th style="background-color: #ffffff !important; padding: 4px 6px">
+              💵 Cash Count
+            </th>
+            <th style="background-color: #ffffff !important; padding: 4px 6px">
+              🔵 GCash Balance
+            </th>
+            <th style="background-color: #ffffff !important; padding: 4px 6px">
+              🟢 Maya Balance
+            </th>
+            <th style="background-color: #ffffff !important; padding: 4px 6px">
+              💳 Credit Card
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: 10px !important;
+              color: #0f172a;
+            ">
+            <td id="print-sub-cash" style="padding: 6px 4px">₱0.00</td>
+            <td id="print-sub-gcash" style="padding: 6px 4px">₱0.00</td>
+            <td id="print-sub-maya" style="padding: 6px 4px">₱0.00</td>
+            <td id="print-sub-card" style="padding: 6px 4px">₱0.00</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Section 1: Transactions Tables -->
+      <div class="print-section-title">
+        II. Daily Sales Transactions Ledger Log
+      </div>
+      <table class="print-data-table">
+        <thead>
+          <tr>
+            <th style="width: 5%; text-align: center">#</th>
+            <th style="width: 10%; text-align: center">Time</th>
+            <th style="width: 20%">Customer Name</th>
+            <th>Services Rendered & Individual Sales Notes</th>
+            <th style="width: 15%; text-align: right">Net Amount</th>
+            <th style="width: 12%; text-align: center">Payment</th>
+          </tr>
+        </thead>
+        <tbody id="print-table-body-transactions">
+          <!-- Data appends dynamically here -->
+        </tbody>
+      </table>
+
+      <!-- Section 2: Expense Vouchers Tables -->
+      <div
+        class="print-section-title"
+        style="page-break-inside: avoid; margin-top: 25px">
+        III. Cash Voucher Expenses & Operating Costs Logs
+      </div>
+      <table class="print-data-table" style="page-break-inside: avoid">
+        <thead>
+          <tr>
+            <th style="width: 12%; text-align: center">Voucher ID</th>
+            <th>Expense Particulars Description Remarks</th>
+            <th style="width: 30%">Voucher Category Taxonomy</th>
+            <th style="width: 20%; text-align: right">Cost Amount</th>
+          </tr>
+        </thead>
+        <tbody id="print-table-body-expenses">
+          <!-- Data appends dynamically here -->
+        </tbody>
+      </table>
+
+      <!-- Section 3: General Remarks Block -->
+      <div style="margin-top: 25px; page-break-inside: avoid">
+        <div class="print-section-title">
+          IV. General Day Shift Remarks & Notes
+        </div>
+        <div
+          id="print-box-remarks"
+          class="preserve-newlines"
+          style="
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 6px;
+            min-height: 50px;
+            font-size: 9.5px;
+            line-height: 1.4;
+            color: #1e293b;
+            background-color: #f8fafc;
+            font-style: italic;
+          ">
+          No remarks added for this day shift file ledger record.
+        </div>
+      </div>
+
+      <!-- Section 4: Formals Signatories Verification Block lines -->
+      <div class="print-signature-container">
+        <div class="print-signature-block">
+          <div class="line"></div>
+          <p>Prepared By: Cashier / Duty Operator Signature</p>
+        </div>
+        <div class="print-signature-block">
+          <div class="line"></div>
+          <p>Audited By: Manager / Authorized Owner Signature</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- THERMAL INVOICE RECEIPT MODAL POPUP GATEWAY                       -->
+    <!-- ================================================================= -->
+    <div
+      id="receipt-modal-overlay"
+      class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+      <!-- Visual Interactive Container Box -->
+      <div
+        class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-sm flex flex-col gap-4 shadow-2xl max-h-[90vh]">
+        <div
+          class="flex justify-between items-center pb-2 border-b border-slate-800">
+          <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="printer" class="w-4 h-4 pink-text"></i> Invoice
+            Generated
+          </h3>
+          <button
+            onclick="closeThermalReceiptModal()"
+            class="text-slate-400 hover:text-slate-200 text-sm p-1">
+            ✕
+          </button>
+        </div>
+
+        <!-- Scrollable Receipt Scroll Box Area Container -->
+        <div
+          class="flex-1 overflow-y-auto custom-scrollbar bg-white text-slate-900 p-4 rounded-xl shadow-inner font-mono text-xs select-text"
+          id="thermal-receipt-scroll-box">
+          <!-- ======================================================= -->
+          <!-- PHYSICAL THERMAL RECEIPT PAPERS FOOTPRINT CONTAINER      -->
+          <!-- ======================================================= -->
+          <div
+            id="print-thermal-receipt-hardware-footprint"
+            style="
+              width: 100%;
+              padding: 0;
+              background: #ffffff;
+              color: #000000;
+              text-align: left;
+            ">
+            <div style="text-align: center; margin-bottom: 12px">
+              <h4 style="margin: 0; font-size: 14px; font-weight: 800">
+                KAT'S & CO.
+              </h4>
+              <p style="margin: 2px 0; font-size: 9px; color: #475569">
+                Beauty & Wellness Hub
+              </p>
+              <p style="margin: 0; font-size: 8px; color: #64748b">
+                Manila, Philippines
+              </p>
+            </div>
+
+            <div style="border-top: 1px dashed #000000; margin: 8px 0"></div>
+
+            <!-- Meta Transaction Metrics Details -->
+            <div style="font-size: 9px; line-height: 1.4; color: #111111">
+              <p>
+                <strong>INVOICE:</strong>
+                <span id="rec-lbl-txn-id">TXN-00000</span>
+              </p>
+              <p>
+                <strong>DATE:</strong>
+                <span id="rec-lbl-date">06/21/2026 15:38</span>
+              </p>
+              <p>
+                <strong>CLIENT:</strong>
+                <span id="rec-lbl-customer">Walk-In</span>
+              </p>
+              <p>
+                <strong>TYPE:</strong>
+                <span id="rec-lbl-type">Walk-In Client</span>
+              </p>
+            </div>
+
+            <div style="border-top: 1px dashed #000000; margin: 8px 0"></div>
+
+            <!-- Items Grid Layout Header -->
+            <table
+              style="
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 9px;
+                line-height: 1.4;
+              ">
+              <thead>
+                <tr style="border-bottom: 1px dashed #000000">
+                  <th style="text-align: left; padding-bottom: 4px">
+                    Service Particulars
+                  </th>
+                  <th
+                    style="text-align: right; padding-bottom: 4px; width: 30%">
+                    Total
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="rec-receipt-table-body-rows">
+                <!-- Items generate dynamically inside this block row list -->
+              </tbody>
+            </table>
+
+            <div style="border-top: 1px dashed #000000; margin: 8px 0"></div>
+
+            <!-- Calculator Breakdown Calculations Block -->
+            <div
+              style="
+                font-size: 9px;
+                line-height: 1.5;
+                text-align: right;
+                padding-left: 20%;
+              ">
+              <div style="display: flex; justify-content: space-between">
+                <span>Gross Subtotal:</span
+                ><span id="rec-lbl-gross">₱0.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between">
+                <span>Discount:</span><span id="rec-lbl-discount">₱0.00</span>
+              </div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  font-weight: bold;
+                  font-size: 11px;
+                  margin-top: 2px;
+                ">
+                <span>TOTAL BILL:</span><span id="rec-lbl-net">₱0.00</span>
+              </div>
+            </div>
+
+            <div style="border-top: 1px dashed #000000; margin: 8px 0"></div>
+
+            <div style="font-size: 9px; line-height: 1.3">
+              <p>
+                <strong>PAY VIA:</strong>
+                <span id="rec-lbl-method" style="text-transform: uppercase"
+                  >CASH</span
+                >
+              </p>
+              <p
+                id="rec-block-notes-wrap"
+                style="margin-top: 4px; font-style: italic; color: #475569">
+                Notes: None
+              </p>
+            </div>
+
+            <div
+              style="
+                text-align: center;
+                margin-top: 15px;
+                font-size: 8.5px;
+                color: #475569;
+              ">
+              <p style="margin: 0; font-weight: bold">
+                Thank you for pampering with us! ✨
+              </p>
+              <p style="margin: 2px 0 0 0">
+                Please present this ticket for any returns.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls Buttons Row Footer -->
+        <div class="grid grid-cols-2 gap-3 shrink-0">
+          <button
+            onclick="closeThermalReceiptModal()"
+            class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer">
+            Close Window
+          </button>
+          <button
+            onclick="executeThermalPrinterHardwareJob()"
+            class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-2.5 rounded-xl text-xs flex justify-center items-center gap-1.5 shadow-md shadow-pink-900/10 cursor-pointer">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i> Run Print Roll
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Client-Side Code Controller -->
+    <!-- https://script.google.com/macros/s/AKfycbwU2Kn7v03BpDOgxa3vkxSEyQ9QRXEjJ2MxdpepAaxtFT2tjO8lXM63CW5N7PgyYHQ/exec -->
+    <!-- Application Script Logic Controller Map Engine -->
+    <script>
+      // Global State Variables for Front-Counter POS Cart
+      let currentCart = [];
+      let globalServices = [];
+      let activeCategoryFilter = "All Menu";
+
+      // Master Memory Cache Buckets
+      let masterCloudTransactions = [];
+      let masterCloudExpenses = [];
+      let masterCloudRemarks = [];
+      let masterCloudBookings = [];
+
+      // Active Operational Security Control Sessions Flags
+      let isDrawerSessionActive = false;
+      let startingCashboxTotal = 0;
+      let currentSelectedDateISO = getTodayISODate();
+
+      function getTodayISODate() {
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+      }
+
+      // 🚨 IMPORTANT: Replace this URL with YOUR newly deployed Google Apps Script Web App URL!
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbwU2Kn7v03BpDOgxa3vkxSEyQ9QRXEjJ2MxdpepAaxtFT2tjO8lXM63CW5N7PgyYHQ/exec";
+
+      // --- 1. SINGLE-CALL UNIFIED MASTER DATABASE LOADER ---
+      function fetchAllMasterDatabaseOnLoad() {
+        if (
+          APPS_SCRIPT_URL === "" ||
+          APPS_SCRIPT_URL === "YOUR_NEW_WEB_APP_URL_HERE" ||
+          APPS_SCRIPT_URL.includes("YOUR_GOOGLE")
+        ) {
+          console.warn(
+            "API Endpoint not configured. Skipping cloud sync to prevent crash.",
+          );
+          Swal.fire({
+            icon: "warning",
+            title: "Setup Required",
+            text: "Please insert your Google Apps Script URL in the code to connect your database.",
+            background: "#1e293b",
+            color: "#f1f5f9",
+            confirmButtonColor: "#db2777",
+          });
+          return;
+        }
+
+        console.log(
+          "🚀 INITIALIZE: Fetching single-call master database tables stream...",
+        );
+
+        fetch(`${APPS_SCRIPT_URL}?action=getAllMasterData`)
+          .then((response) => {
+            if (!response.ok) throw new Error("Network response was not OK.");
+            return response.json();
+          })
+          .then((res) => {
+            if (res.status === "success") {
+              globalServices = res.services || [];
+              masterCloudTransactions = res.transactions || [];
+              masterCloudExpenses = res.expenses || [];
+              masterCloudRemarks = res.remarks || [];
+              masterCloudBookings = res.bookings || [];
+
+              console.log(
+                "📥 STORAGE: Master arrays synchronized. Bookings cached count:",
+                masterCloudBookings.length,
+              );
+              console.log(
+                "📥 STORAGE: Master arrays synchronized. Total txns cached:",
+                masterCloudTransactions.length,
+              );
+
+              generateDynamicCategoryButtons(globalServices);
+              renderServicesGrid(globalServices);
+
+              // 1. Force the date-picker calendar layout value strictly to today's local date text string
+              const todayLocalStr = new Date().toLocaleDateString("sv-SE"); // Formats reliably to "YYYY-MM-DD"
+              const picker = document.getElementById("ledger-date-picker");
+              if (picker) picker.value = todayLocalStr;
+              currentSelectedDateISO = todayLocalStr;
+
+              // 2. Pass control flow execution to our automated morning onboarding check block
+              checkAndEnforceMorningOpeningShift();
+            } else {
+              throw new Error(res.message || "Unknown API Error");
+            }
+          })
+          .catch((err) => {
+            console.error(
+              "💥 SYNC CRASH: Master database synchronization failure:",
+              err,
+            );
+            Swal.fire({
+              icon: "error",
+              title: "Sync Failed",
+              text: `Could not reach Google Sheets. Error: ${err.message}. Make sure your App Script URL is correct and deployed.`,
+              background: "#1e293b",
+              color: "#f1f5f9",
+              confirmButtonColor: "#db2777",
+            });
+          });
+      }
+
+      // --- MANDATORY AUTOMATED SHIFT LAUNCH CONTROLLER ---
+      function checkAndEnforceMorningOpeningShift() {
+        // Scan cache array using character substrings to look for today's date entry record
+        const todayRemarksObj = masterCloudRemarks.find((r) => {
+          const dateField = r.date || "";
+          return (
+            dateField.toString().substring(0, 10) === currentSelectedDateISO
+          );
+        });
+
+        const savedStartAmt = todayRemarksObj
+          ? parseFloat(todayRemarksObj.cashbox_start)
+          : 0;
+
+        if (savedStartAmt > 0) {
+          // Scenario A: Starting records exist in spreadsheet. Unlock system seamlessly.
+          isDrawerSessionActive = true;
+          startingCashboxTotal = savedStartAmt;
+          console.log(
+            "🟢 SHIFT LOCKER: Active day file found. Terminal Unlocked. Capital -> ₱",
+            savedStartAmt,
+          );
+
+          // Update UI indicators and display tags
+          setDrawerSessionUIState(true, savedStartAmt);
+          fetchDayLedgerRecords();
+        } else {
+          // Scenario B: No record found. Block user interactions with a mandatory startup modal.
+          isDrawerSessionActive = false;
+          startingCashboxTotal = 0;
+          setDrawerSessionUIState(false, 0);
+
+          Swal.fire({
+            title: "☀️ Initialize Morning Register",
+            text: `Counter shift is currently locked for ${currentSelectedDateISO}. Please declare your starting cashbox drawer change balance to unlock terminal operations:`,
+            input: "number",
+            inputPlaceholder: "0.00",
+            background: "#1e293b",
+            color: "#f1f5f9",
+            confirmButtonColor: "#db2777",
+            allowOutsideClick: false, // Prevents cashier from clicking out to bypass the form
+            allowEscapeKey: false, // Blocks escaping out
+            inputAttributes: { min: "1", step: "1" },
+            inputValidator: (value) => {
+              if (!value || parseFloat(value) <= 0) {
+                return "You must enter a valid starting cash balance greater than ₱0!";
+              }
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const enteredAmt = parseFloat(result.value);
+
+              Swal.fire({
+                title: "Opening Shift...",
+                background: "#1e293b",
+                color: "#f1f5f9",
+                didOpen: () => {
+                  Swal.showLoading();
+                },
+              });
+
+              // Fire an automated network POST block to write the opening balance row permanently to Google Drive
+              const payload = {
+                action: "saveDailyRemarks",
+                payload: {
+                  date: currentSelectedDateISO,
+                  cashbox_start: enteredAmt,
+                  general_transaction_notes: "",
+                },
+              };
+
+              fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+
+                body: JSON.stringify(payload),
+              }).then(() => {
+                // Update our local browser cache map state array instantly to keep data synchronized
+                masterCloudRemarks.push({
+                  date: currentSelectedDateISO,
+                  cashbox_start: enteredAmt,
+                  general_transaction_notes: "",
+                });
+
+                isDrawerSessionActive = true;
+                startingCashboxTotal = enteredAmt;
+                setDrawerSessionUIState(true, enteredAmt);
+
+                Swal.fire({
+                  icon: "success",
+                  title: "Register Active",
+                  text: "Morning session authorized. Terminal fully functional.",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+                switchView("pos"); // Automatically navigate the staff member to the main point of sale counter screen
+              });
+            }
+          });
+        }
+      }
+
+      // Shared UI utility helper function to switch indicators and text blocks across tabs
+      function setDrawerSessionUIState(isOpen, amount) {
+        const statusText = document.getElementById("drawer-session-status");
+        const statusDot = document.getElementById("drawer-status-dot");
+        const displayLabel = document.getElementById("display-cashbox-start");
+
+        if (displayLabel)
+          displayLabel.textContent = `₱${amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+
+        if (isOpen) {
+          if (statusText) {
+            statusText.textContent = "🟢 Session Open";
+            statusText.className = "text-xs font-bold text-emerald-400";
+          }
+          if (statusDot)
+            statusDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+        } else {
+          if (statusText) {
+            statusText.textContent = "🚨 Session Closed";
+            statusText.className = "text-xs font-bold text-rose-400";
+          }
+          if (statusDot)
+            statusDot.className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+        }
+      }
+
+      // --- 2. WORKSPACE DISPLAY PANEL NAVIGATION ROUTER ---
+      function switchView(targetPanel) {
+        const panels = ["pos", "calendar", "cashier"];
+        panels.forEach((p) => {
+          const el = document.getElementById(`panel-view-${p}`);
+          const btn = document.getElementById(`nav-${p}`);
+          if (el && btn) {
+            if (p === targetPanel) {
+              el.classList.remove("hidden");
+              btn.className =
+                "w-full text-left font-bold text-sm px-4 py-3 rounded-xl cursor-pointer transition flex items-center gap-3 bg-pink-600 text-white shadow-md";
+            } else {
+              el.classList.add("hidden");
+              btn.className =
+                "w-full text-left font-semibold text-sm px-4 py-3 rounded-xl cursor-pointer transition flex items-center gap-3 text-slate-400 hover:bg-slate-800 hover:text-slate-200";
+            }
+          }
+        });
+
+        const t = document.getElementById("view-title-display");
+        const s = document.getElementById("view-subtitle-display");
+        if (targetPanel === "pos") {
+          t.textContent = "Point of Sale";
+          s.textContent = "Process front-counter service checkout transactions";
+        } else if (targetPanel === "calendar") {
+          t.textContent = "Calendar";
+          s.textContent = "Bookings and appointments at a glance.";
+
+          // Initialize full-month dashboard grid maps engine
+          renderMonthlyCalendarViewBoard();
+        } else if (targetPanel === "cashier") {
+          t.textContent = "Cashier Form";
+          s.textContent = "Daily sales and expenses log matrix registers";
+          fetchDayLedgerRecords();
+        }
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      function adjustLedgerDate(daysToOffset) {
+        const picker = document.getElementById("ledger-date-picker");
+        if (!picker) return;
+
+        let d = new Date(picker.value + "T00:00:00");
+        d.setDate(d.getDate() + daysToOffset);
+
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+
+        picker.value = `${year}-${month}-${day}`;
+        fetchDayLedgerRecords();
+      }
+
+      // --- 3. DYNAMIC CLIENT-SIDE MEMORY DATE FILTER SLICER ---
+      function fetchDayLedgerRecords() {
+        currentSelectedDateISO =
+          document.getElementById("ledger-date-picker").value;
+
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        const prettyDate = new Date(
+          currentSelectedDateISO + "T00:00:00",
+        ).toLocaleDateString("en-US", options);
+        document.getElementById("ledger-date-title").textContent = prettyDate;
+
+        const filteredTxns = masterCloudTransactions.filter((t) => {
+          const timestampRawStr = (t.timestamp || "").toString().trim();
+          return timestampRawStr.substring(0, 10) === currentSelectedDateISO;
+        });
+
+        const filteredExpenses = masterCloudExpenses.filter((e) => {
+          const expenseRawStr = (e.date || "").toString().trim();
+          return expenseRawStr.substring(0, 10) === currentSelectedDateISO;
+        });
+
+        const dayRemarksObj = masterCloudRemarks.find((r) => {
+          const remarksRawStr = (r.date || "").toString().trim();
+          return remarksRawStr.substring(0, 10) === currentSelectedDateISO;
+        });
+
+        // REFACTORED: Read cashbox amount value from the global memory object data
+        const currentDayOpeningBalance = dayRemarksObj
+          ? parseFloat(dayRemarksObj.cashbox_start) || 0
+          : 0;
+
+        // Populate the Daily Shift Remarks notes text area field instantly
+        document.getElementById("input-ledger-notes").value = dayRemarksObj
+          ? dayRemarksObj.general_transaction_notes || ""
+          : "";
+
+        // REFACTORED: Handle global states flag assignments
+        if (currentDayOpeningBalance > 0) {
+          isDrawerSessionActive = true;
+          setDrawerSessionUIState(true, currentDayOpeningBalance);
+        } else {
+          isDrawerSessionActive = false;
+          setDrawerSessionUIState(false, 0);
+        }
+
+        renderFilteredLedgerTables(filteredTxns, filteredExpenses);
+      }
+
+      // --- 4. DATA PLACEMENT RENDERING COMPONENT LOOPS ---
+      function renderFilteredLedgerTables(txns, expenses) {
+        const txBody = document.getElementById(
+          "ledger-transactions-table-body",
+        );
+        if (txBody) {
+          txBody.innerHTML = "";
+          if (txns.length === 0) {
+            txBody.innerHTML = `<tr><td colspan="6" class="text-center py-10 text-slate-500 font-medium tracking-wide">No transactions recorded for this date.</td></tr>`;
+          } else {
+            txns.forEach((t, i) => {
+              const row = document.createElement("tr");
+              row.className =
+                "border-b border-slate-800/60 hover:bg-slate-900/30 transition duration-150 animate-fadeIn";
+
+              const customer = t.customer_name || t.customer || "Walk-In";
+              const services = t.services_rendered || t.services || "N/A";
+              const netAmount =
+                parseFloat(
+                  t.net_total !== undefined ? t.net_total : t.amount,
+                ) || 0;
+              const method = t.payment_method || t.payment || "Cash";
+              const noteText = t.sales_notes || t.notes || "";
+              const notesLine = noteText
+                ? `<div class="text-[10px] text-slate-500 italic mt-0.5">📝 Note: ${noteText}</div>`
+                : "";
+
+              // Extract localized hour and minute strings cleanly from text formats
+              let displayTime = t.time || "00:00 AM";
+              try {
+                const rawTimestampStr = (t.timestamp || "").toString().trim();
+                if (rawTimestampStr.includes(" ")) {
+                  const clockSegment = rawTimestampStr.split(" ")[1];
+                  const [hourStr, minStr] = clockSegment.split(":");
+                  let hours = parseInt(hourStr, 10);
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  hours = hours % 12;
+                  hours = hours ? hours : 12;
+                  displayTime = `${hours}:${minStr} ${ampm}`;
+                } else if (rawTimestampStr.includes("T")) {
+                  const clockSegment = rawTimestampStr.split("T")[1];
+                  const [hourStr, minStr] = clockSegment.split(":");
+                  let hours = parseInt(hourStr, 10);
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  hours = hours % 12;
+                  hours = hours ? hours : 12;
+                  displayTime = `${hours}:${minStr} ${ampm}`;
+                }
+              } catch (e) {}
+
+              row.innerHTML = `
+                            <td class="py-3 text-slate-500 font-mono">${i + 1}</td>
+                            <td class="py-3 font-medium text-slate-400">${displayTime}</td>
+                            <td class="py-3 font-bold text-slate-200">${customer}</td>
+                            <td class="py-3 font-medium text-slate-400 max-w-[220px]"><div class="truncate">${services}</div>${notesLine}</td>
+                            <td class="py-3 text-right font-black pink-text">₱${netAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                            <td class="py-3 pl-6 font-semibold"><span class="bg-slate-950 border border-slate-800/80 px-2.5 py-1 rounded text-[10px] text-slate-300 uppercase tracking-wider">${method}</span></td>
+                        `;
+              txBody.appendChild(row);
+            });
+          }
+        }
+
+        const expContainer = document.getElementById(
+          "ledger-expenses-list-container",
+        );
+        if (expContainer) {
+          expContainer.innerHTML = "";
+          if (expenses.length === 0) {
+            expContainer.innerHTML = `<p class="text-xs text-slate-500 font-medium py-4">No cash vouchers logged.</p>`;
+          } else {
+            expenses.forEach((e) => {
+              const div = document.createElement("div");
+              div.className =
+                "flex justify-between items-center bg-slate-950 border border-slate-800 px-3 py-2 rounded-lg text-xs animate-fadeIn";
+              const notes = e.notes || e.particulars || "Expense";
+              const cat = e.category || "Supplies";
+              const amt = parseFloat(e.amount) || 0;
+              div.innerHTML = `<span class="text-slate-400 font-medium">${notes} (${cat})</span><span class="text-rose-400 font-bold">₱${amt.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>`;
+              expContainer.appendChild(div);
+            });
+          }
+        }
+        calculateLocalSummaryMath(txns, expenses);
+      }
+
+      // --- CHROME OPTIMIZED FINANCIAL CARDS CALCULATOR ENGINE ---
+      function calculateLocalSummaryMath(txns, expenses) {
+        // FIXED: Instead of reading an input .value, we read from our new display label text content!
+        const displayLabel = document.getElementById("display-cashbox-start");
+        let startVal = 0;
+
+        if (displayLabel) {
+          // Strip out currency symbols and commas to convert back to a clean number safely
+          const rawText = displayLabel.textContent.replace(/[^\d.]/g, "");
+          startVal = parseFloat(rawText) || 0;
+        } else {
+          // Secondary fallback to global memory tracking if layout elements aren't painted yet
+          startVal = parseFloat(startingCashboxTotal) || 0;
+        }
+
+        // Explicitly separate currency balance tracking channels
+        let gcashSum = 0;
+        let mayaSum = 0;
+        let cardSum = 0;
+        let cashSum = 0;
+
+        txns.forEach((t) => {
+          const amt =
+            parseFloat(t.net_total !== undefined ? t.net_total : t.amount) || 0;
+          const method = (t.payment_method || t.payment || "Cash")
+            .toString()
+            .trim();
+
+          if (method === "GCash") {
+            gcashSum += amt;
+          } else if (method === "Maya") {
+            mayaSum += amt;
+          } else if (method === "Card") {
+            cardSum += amt;
+          } else if (method === "Cash") {
+            cashSum += amt;
+          }
+        });
+
+        const salesGrandTotal = gcashSum + mayaSum + cardSum + cashSum;
+        const expenseSum = expenses.reduce(
+          (sum, e) => sum + (parseFloat(e.amount) || 0),
+          0,
+        );
+
+        // Apply strict operational balance formulas:
+        const totalCashInBox = startVal + cashSum - expenseSum;
+        const netFundsTotal = startVal + salesGrandTotal - expenseSum;
+
+        // Direct text token rendering replacements to your top metric summary cards widgets
+        if (document.getElementById("summary-voucher-expense-total"))
+          document.getElementById("summary-voucher-expense-total").textContent =
+            `₱${expenseSum.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (document.getElementById("summary-lbl-start"))
+          document.getElementById("summary-lbl-start").textContent =
+            `₱${startVal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (document.getElementById("summary-lbl-expenses"))
+          document.getElementById("summary-lbl-expenses").textContent =
+            `-₱${expenseSum.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (document.getElementById("summary-lbl-grand"))
+          document.getElementById("summary-lbl-grand").textContent =
+            `₱${salesGrandTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (document.getElementById("summary-lbl-box-cash"))
+          document.getElementById("summary-lbl-box-cash").textContent =
+            `₱${totalCashInBox.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (document.getElementById("summary-lbl-net-funds"))
+          document.getElementById("summary-lbl-net-funds").textContent =
+            `₱${netFundsTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+
+        // Update Card 2 internal sub-badge statistics metrics text rows
+        if (document.getElementById("summary-lbl-cash"))
+          document.getElementById("summary-lbl-cash").textContent =
+            `₱${cashSum.toLocaleString()}`;
+        if (document.getElementById("summary-lbl-gcash"))
+          document.getElementById("summary-lbl-gcash").textContent =
+            `₱${gcashSum.toLocaleString()}`;
+        if (document.getElementById("summary-lbl-card"))
+          document.getElementById("summary-lbl-card").textContent =
+            `₱${cardSum.toLocaleString()}`;
+        if (document.getElementById("summary-lbl-maya"))
+          document.getElementById("summary-lbl-maya").textContent =
+            `₱${mayaSum.toLocaleString()}`;
+
+        if (window.lucide) lucide.createIcons();
+      }
+
+      // --- 5. CASH DRAWER LOCK & PASSCODE MANAGERS ---
+      function checkSessionLock() {
+        if (!isDrawerSessionActive) {
+          Swal.fire({
+            icon: "warning",
+            title: "Shift Session Locked",
+            text: "You must provide your opening daily cash balance in the Cashier Form first!",
+            background: "#1e293b",
+            color: "#f1f5f9",
+            confirmButtonColor: "#db2777",
+          }).then(() => {
+            switchView("cashier");
+          });
+          return false;
+        }
+        return true;
+      }
+
+      // --- FIXED REMARKS SAVE: SECURED FROM NULL VALUE POINTER ERRORS ---
+      function saveDailyLedgerRecordToCloud() {
+        // Read directly from system memory variables to clear null HTML tracker exceptions
+        const startCashAmt = parseFloat(startingCashboxTotal) || 0;
+        const remarksText = document
+          .getElementById("input-ledger-notes")
+          .value.trim();
+
+        if (startCashAmt <= 0) {
+          Swal.fire({
+            icon: "warning",
+            title: "Session Capital Missing",
+            text: "You must supply an opening cashbox balance greater than ₱0 in order to log comments for this day file!",
+            background: "#1e293b",
+            color: "#f1f5f9",
+            confirmButtonColor: "#db2777",
+          });
+          return;
+        }
+
+        Swal.fire({
+          title: "Syncing Ledger Records...",
+          background: "#1e293b",
+          color: "#f1f5f9",
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        const payload = {
+          action: "saveDailyRemarks",
+          payload: {
+            date: currentSelectedDateISO,
+            cashbox_start: startCashAmt,
+            general_transaction_notes: remarksText,
+          },
+        };
+
+        console.log("Sending DailyRemarks payload:", payload);
+
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload),
+        })
+          .then(async (response) => {
+            const text = await response.text();
+            console.log("Raw Apps Script response:", text);
+            return JSON.parse(text);
+          })
+          .then((result) => {
+            if (result.status !== "success") throw new Error(result.message);
+
+            Swal.fire({
+              icon: "success",
+              title: "Ledger Secured",
+              text: "General shift remarks committed permanently to your Drive tables!",
+              background: "#1e293b",
+              color: "#f1f5f9",
+              confirmButtonColor: "#db2777",
+            });
+
+            // Isolate substring matches inside your master caching records lists array parameters
+            const existingRemIdx = masterCloudRemarks.findIndex(
+              (r) =>
+                (r.date || "").toString().substring(0, 10) ===
+                currentSelectedDateISO,
+            );
+
+            const mockObj = {
+              date: currentSelectedDateISO + "T00:00:00.000Z",
+              cashbox_start: startCashAmt,
+              general_transaction_notes: remarksText,
+            };
+
+            if (existingRemIdx !== -1) {
+              masterCloudRemarks[existingRemIdx] = mockObj; // Sync in local memory
+            } else {
+              masterCloudRemarks.push(mockObj);
+            }
+
+            fetchDayLedgerRecords();
+          })
+          .catch((err) => {
+            console.error("Remarks transmission fault:", err);
+            Swal.fire({
+              icon: "error",
+              title: "Save Failed",
+              text: "Could not communicate with Google Sheets. Please check your APPS_SCRIPT_URL.",
+              background: "#1e293b",
+              color: "#f1f5f9",
+            });
+          });
+      }
+
+      // --- UPGRADED: SECURE ADMIN OVERRIDE WITH DIRECT SHEET OVERWRITING ---
+      function triggerAdminCashboxOverridePrompt() {
+        Swal.fire({
+          title: "Supervisor Security Code Required",
+          text: "Modifying a shift opening capital balance requires authorization.",
+          input: "password",
+          inputPlaceholder: "Enter Admin PIN",
+          background: "#1e293b",
+          color: "#f1f5f9",
+          confirmButtonColor: "#db2777",
+          cancelButtonColor: "#475569",
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            if (result.value === "admin123") {
+              // Step A: Prompt for the updated cash amount input field
+              Swal.fire({
+                title: "Enter New Cashbox Total",
+                input: "number",
+                inputPlaceholder: "0.00",
+                background: "#1e293b",
+                color: "#f1f5f9",
+                confirmButtonColor: "#db2777",
+                preConfirm: (newAmt) => {
+                  if (!newAmt || parseFloat(newAmt) < 0) {
+                    Swal.showValidationMessage(
+                      "Provide a valid numeric balance!",
+                    );
+                    return false;
+                  }
+                  return parseFloat(newAmt);
+                },
+              }).then((amtRes) => {
+                if (amtRes.isConfirmed) {
+                  const finalUpdatedAmt = amtRes.value;
+
+                  // Step B: Trigger the live network loader while it syncs with Google Sheets rows
+                  Swal.fire({
+                    title: "Overwriting Cloud Records...",
+                    background: "#1e293b",
+                    color: "#f1f5f9",
+                    didOpen: () => {
+                      Swal.showLoading();
+                    },
+                  });
+
+                  // Grab any text current typed in the remarks block box so we don't accidentally erase it
+                  const currentRemarksText = document.getElementById(
+                    "input-ledger-notes",
+                  )
+                    ? document.getElementById("input-ledger-notes").value.trim()
+                    : "";
+
+                  const payload = {
+                    action: "saveDailyRemarks",
+                    payload: {
+                      date: currentSelectedDateISO,
+                      cashbox_start: finalUpdatedAmt, // ◄ DIRECT OVERWRITE VALUE
+                      general_transaction_notes: currentRemarksText,
+                    },
+                  };
+
+                  // Step C: Post directly to the live Google Sheets API endpoint link
+                  fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+
+                    body: JSON.stringify(payload),
+                  })
+                    .then(() => {
+                      // Step D: Update local browser RAM arrays instantly to prevent needing a page refresh
+                      startingCashboxTotal = finalUpdatedAmt;
+
+                      const existingRemIdx = masterCloudRemarks.findIndex(
+                        (r) => {
+                          const dateField = r.date || "";
+                          return (
+                            dateField.toString().substring(0, 10) ===
+                            currentSelectedDateISO
+                          );
+                        },
+                      );
+
+                      const updatedCacheObj = {
+                        date: currentSelectedDateISO,
+                        cashbox_start: finalUpdatedAmt,
+                        general_transaction_notes: currentRemarksText,
+                      };
+
+                      if (existingRemIdx !== -1) {
+                        masterCloudRemarks[existingRemIdx] = updatedCacheObj; // Overwrite in local memory
+                      } else {
+                        masterCloudRemarks.push(updatedCacheObj);
+                      }
+
+                      // Force UI to re-render all card balances and text elements instantly
+                      fetchDayLedgerRecords();
+
+                      Swal.fire({
+                        icon: "success",
+                        title: "Cloud Record Overwritten",
+                        text: `The morning capital balance has been updated to ₱${finalUpdatedAmt.toLocaleString()} inside your Google Sheets database tab!`,
+                        background: "#1e293b",
+                        color: "#f1f5f9",
+                        confirmButtonColor: "#db2777",
+                      });
+                    })
+                    .catch((err) => {
+                      console.error("Admin upload overwrite crash error:", err);
+                      Swal.fire({
+                        icon: "error",
+                        title: "Network Fault",
+                        text: "Failed to synchronize override value with Google Drive.",
+                        background: "#1e293b",
+                        color: "#f1f5f9",
+                      });
+                    });
+                }
+              });
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Access Denied",
+                text: "The input security PIN code is invalid.",
+                background: "#1e293b",
+                color: "#f1f5f9",
+                confirmButtonColor: "#db2777",
+              });
+            }
+          }
+        });
+      }
+
+      // --- 6. CATALOG MANAGEMENT & SHOPPING CART TERMINALS ---
+      function generateDynamicCategoryButtons(servicesArray) {
+        const container = document.getElementById("category-filters-container");
+        if (!container) return;
+        const uniqueCategoriesSet = new Set();
+        servicesArray.forEach((s) => {
+          const cat = s.category || s.Category;
+          if (cat && cat.trim() !== "") uniqueCategoriesSet.add(cat.trim());
+        });
+        const finalCategoriesMenu = [
+          "All Menu",
+          ...Array.from(uniqueCategoriesSet),
+        ];
+        container.innerHTML = "";
+        finalCategoriesMenu.forEach((catName) => {
+          const btn = document.createElement("button");
+          btn.textContent = catName;
+          btn.className =
+            "text-sm font-medium px-5 py-2 rounded-full cursor-pointer transition duration-150 transform active:scale-95 whitespace-nowrap select-none";
+          if (catName === activeCategoryFilter)
+            btn.classList.add(
+              "bg-pink-600",
+              "text-white",
+              "font-bold",
+              "shadow-md",
+            );
+          else btn.classList.add("bg-slate-800", "text-slate-300");
+          btn.onclick = () => {
+            activeCategoryFilter = catName;
+            generateDynamicCategoryButtons(globalServices);
+            if (catName === "All Menu") renderServicesGrid(globalServices);
+            else
+              renderServicesGrid(
+                globalServices.filter(
+                  (i) => (i.category || i.Category || "").trim() === catName,
+                ),
+              );
+          };
+          container.appendChild(btn);
+        });
+      }
+
+      function renderServicesGrid(arr) {
+        const g = document.getElementById("services-grid");
+        if (!g) return;
+        g.innerHTML = "";
+        arr.forEach((s) => {
+          const card = document.createElement("div");
+          card.className = "service-card";
+          const price = parseFloat(s.price || s.Price) || 0;
+          card.onclick = () => addToCart(s.service_id, s.service_name, price);
+          card.innerHTML = `<div><h3 class="text-base font-bold text-slate-100">${s.service_name}</h3><p class="text-xs text-pink-400 font-bold mt-1 uppercase">${s.category || "General"}</p></div><div class="flex justify-between items-center mt-4"><span class="text-lg font-black pink-text">₱${price.toLocaleString()}</span><div class="bg-slate-800 text-pink-400 p-2 rounded-lg border border-slate-700"><i data-lucide="plus" class="w-4 h-4"></i></div></div>`;
+          g.appendChild(card);
+        });
+        if (window.lucide) lucide.createIcons();
+      }
+
+      function addToCart(id, name, price) {
+        const existing = currentCart.find((item) => item.id === id);
+        if (existing) existing.qty += 1;
+        else currentCart.push({ id, name, price, qty: 1 });
+        renderCart();
+      }
+      function removeCartItem(id) {
+        currentCart = currentCart.filter((item) => item.id !== id);
+        renderCart();
+      }
+      function clearCart() {
+        currentCart = [];
+        document.getElementById("summary-discount").value = 0;
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-address").value = "";
+        if (document.getElementById("sales-notes"))
+          document.getElementById("sales-notes").value = "";
+        renderCart();
+      }
+
+      function renderCart() {
+        const container = document.getElementById("cart-items");
+        const emptyState = document.getElementById("cart-empty");
+        if (!container) return;
+        container.querySelectorAll(".cart-row").forEach((row) => row.remove());
+        if (currentCart.length === 0) {
+          if (emptyState) emptyState.style.display = "flex";
+        } else {
+          if (emptyState) emptyState.style.display = "none";
+          currentCart.forEach((item) => {
+            const el = document.createElement("div");
+            el.className = "cart-row animate-fadeIn";
+            el.innerHTML = `<div style="max-width: 180px;"><h4 style="margin:0; font-size:0.875rem; font-weight:700; color:#f1f5f9; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.name}</h4><p style="margin:4px 0 0 0; font-size:0.75rem; color:#94a3b8; font-weight:600;">₱${item.price.toLocaleString()} × ${item.qty}</p></div><div style="display:flex; align-items:center; gap:0.75rem;"><span style="font-size:0.875rem; font-weight:700; color:#f472b6;">₱${(item.price * item.qty).toLocaleString()}</span><button onclick="removeCartItem('${item.id}')" style="background:transparent; border:none; color:#94a3b8; cursor:pointer; font-weight:bold; font-size:1.15rem; padding: 2px 6px;">×</button></div>`;
+            container.appendChild(el);
+          });
+        }
+        calculateTotals();
+      }
+
+      function calculateTotals() {
+        const sub = currentCart.reduce(
+          (sum, item) => sum + item.price * item.qty,
+          0,
+        );
+        const disc =
+          parseFloat(document.getElementById("summary-discount").value) || 0;
+        if (document.getElementById("summary-subtotal"))
+          document.getElementById("summary-subtotal").textContent =
+            `₱${sub.toLocaleString()}`;
+        if (document.getElementById("summary-net"))
+          document.getElementById("summary-net").textContent =
+            `₱${Math.max(0, sub - disc).toLocaleString()}`;
+      }
+
+      // --- 1. LIVE SYNCHRONIZED CHECKOUT & THERMAL MODAL LAUNCHER ---
+      function triggerCheckout() {
+        if (typeof checkSessionLock === "function" && !checkSessionLock())
+          return;
+        if (currentCart.length === 0) return;
+
+        Swal.fire({
+          title: "Logging Transaction...",
+          html: "Securing record permanently in cloud rows...",
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          background: "#1e293b",
+          color: "#f1f5f9",
+        });
+
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const seconds = String(now.getSeconds()).padStart(2, "0");
+
+        const lockedLocalTimestamp = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000`;
+
+        const grossAmt = currentCart.reduce(
+          (sum, item) => sum + item.price * item.qty,
+          0,
+        );
+        const discAmt =
+          parseFloat(document.getElementById("summary-discount").value) || 0;
+        const netAmt = grossAmt - discAmt;
+        const payMethod = document.getElementById("payment-method").value;
+        const saleNoteText = document.getElementById("sales-notes")
+          ? document.getElementById("sales-notes").value.trim()
+          : "";
+        const customerNameText =
+          document.getElementById("customer-name").value.trim() || "Walk-In";
+        const customerTypeSelected =
+          document.getElementById("customer-type").value;
+        const customerAddressText =
+          document.getElementById("customer-address").value.trim() || "N/A";
+
+        const payload = {
+          action: "processCheckout",
+          payload: {
+            timestamp: lockedLocalTimestamp,
+            customer_name: customerNameText,
+            customer_type: customerTypeSelected,
+            customer_address: customerAddressText,
+            services_rendered: currentCart
+              .map((i) => `${i.name} (x${i.qty})`)
+              .join(", "),
+            service_ids: currentCart.flatMap((i) => Array(i.qty).fill(i.id)),
+            gross_total: grossAmt,
+            discount_applied: discAmt,
+            net_total: netAmt,
+            payment_method: payMethod,
+            sales_notes: saleNoteText,
+          },
+        };
+
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then(() => {
+            // Double-log internally inside client cache parameters instantly to bypass network delay
+            masterCloudTransactions.push({
+              timestamp: lockedLocalTimestamp,
+              customer_name: customerNameText,
+              services_rendered: payload.payload.services_rendered,
+              net_total: netAmt,
+              payment_method: payMethod,
+              sales_notes: saleNoteText,
+            });
+
+            // Close active loading animation popup cleanly
+            Swal.close();
+
+            // Fire instant internal dashboard text summary re-render math calculation metrics
+            clearCart();
+            fetchDayLedgerRecords();
+
+            // OPEN THE THERMAL RECEIPT POPUP COMPONENT WITH GENERATED DATA MATRIX
+            launchThermalInvoiceReceiptPopup(
+              payload.payload,
+              lockedLocalTimestamp,
+            );
+          })
+          .catch((err) => {
+            console.error("Transmission breakdown crash failure error:", err);
+            Swal.fire({
+              icon: "error",
+              title: "Checkout Failed",
+              text: "Could not write row logs to Google Sheets. Check your connection link address config.",
+              background: "#1e293b",
+              color: "#f1f5f9",
+            });
+          });
+      }
+
+      // --- 2. GENERATE AND CONSTRUCT THERMAL RECEIPT TEXT MARKUPS ---
+      // --- FIXED: PARSES AND DISPLAYS LINE-ITEM TOTALS FROM CATALOG CACHE ---
+      function launchThermalInvoiceReceiptPopup(data, timestamp) {
+        const generatedInvId =
+          "INV-" + new Date().getTime().toString().substring(6);
+
+        document.getElementById("rec-lbl-txn-id").textContent = generatedInvId;
+        document.getElementById("rec-lbl-date").textContent = timestamp
+          .replace("T", " ")
+          .substring(0, 16);
+        document.getElementById("rec-lbl-customer").textContent =
+          data.customer_name;
+        document.getElementById("rec-lbl-type").textContent =
+          data.customer_type;
+
+        document.getElementById("rec-lbl-gross").textContent =
+          `₱${data.gross_total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        document.getElementById("rec-lbl-discount").textContent =
+          `₱${data.discount_applied.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        document.getElementById("rec-lbl-net").textContent =
+          `₱${data.net_total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        document.getElementById("rec-lbl-method").textContent =
+          data.payment_method;
+
+        const notesWrap = document.getElementById("rec-block-notes-wrap");
+        if (data.sales_notes) {
+          notesWrap.style.display = "block";
+          notesWrap.innerHTML = `<strong>Notes:</strong> ${data.sales_notes}`;
+        } else {
+          notesWrap.style.display = "none";
+        }
+
+        const tbody = document.getElementById("rec-receipt-table-body-rows");
+        tbody.innerHTML = "";
+
+        // Loop through each service item in the checkout payload
+        const itemsArray = data.services_rendered.split(", ");
+
+        itemsArray.forEach((item, index) => {
+          const tr = document.createElement("tr");
+          tr.style.borderBottom = "1px dotted #e2e8f0";
+
+          // Extract description and quantity parameters
+          const quantitySplitIndex = item.lastIndexOf(" (x");
+          const itemName =
+            quantitySplitIndex !== -1
+              ? item.substring(0, quantitySplitIndex)
+              : item;
+          const itemQty =
+            quantitySplitIndex !== -1
+              ? parseInt(
+                  item.substring(quantitySplitIndex + 3, item.length - 1),
+                ) || 1
+              : 1;
+
+          // CRITICAL ADDITION: Scan your global services catalog to pull the matching base price
+          const matchingServiceId = data.service_ids[index] || "";
+          const catalogMatch = globalServices.find(
+            (s) =>
+              (s.service_id || s.Id || "") === matchingServiceId ||
+              (s.service_name || s.Name || "") === itemName,
+          );
+
+          const basePrice = catalogMatch
+            ? parseFloat(catalogMatch.price || catalogMatch.Price) || 0
+            : 0;
+          const calculatedLineTotal = basePrice * itemQty;
+
+          tr.innerHTML = `
+                    <td style="padding: 4px 0; max-width: 140px; word-wrap: break-word; white-space: normal; font-size: 9px; color: #000000;">
+                        <div style="font-weight: bold;">${itemName}</div>
+                        <div style="font-size: 8px; color: #475569;">₱${basePrice.toLocaleString(undefined, { minimumFractionDigits: 2 })} × ${itemQty}</div>
+                    </td>
+                    <td style="text-align: right; padding: 4px 0; font-weight: bold; vertical-align: bottom; font-size: 9px; color: #000000;">
+                        ₱${calculatedLineTotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                    </td>
+                `;
+          tbody.appendChild(tr);
+        });
+
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+        document
+          .getElementById("receipt-modal-overlay")
+          .classList.remove("hidden");
+      }
+
+      function closeThermalReceiptModal() {
+        document
+          .getElementById("receipt-modal-overlay")
+          .classList.add("hidden");
+      }
+
+      // --- 3. HARDWARE PRINTER RUN TRIGGER METHOD CONTROLLER ---
+      function executeThermalPrinterHardwareJob() {
+        // A. Inject special mode identifier body tag class to toggle target media visibility queries
+        document.body.classList.add("thermal-print-mode");
+
+        // B. Launch hardware dialog loop execution route
+        window.print();
+
+        // C. Clean up state variables indicators upon closure path exit actions
+        setTimeout(() => {
+          document.body.classList.remove("thermal-print-mode");
+        }, 500);
+      }
+
+      function triggerExpenseInputModalPrompt() {
+        Swal.fire({
+          title: "Add Cash Expense Voucher",
+          background: "#1e293b",
+          color: "#f1f5f9",
+          confirmButtonColor: "#db2777",
+          cancelButtonColor: "#475569",
+          showCancelButton: true,
+          html: `
+                    <div class="text-left mb-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Expense Category</label>
+                        <select id="swal-exp-cat" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-pink-500 cursor-pointer">
+                            <option value="Supplies">📦 Supplies / Materials</option>
+                            <option value="Utilities">💡 Utilities (Power/Water)</option>
+                            <option value="Staff Commission">💇 Staff Commission</option>
+                            <option value="Rent">🏢 Rent / Lease</option>
+                        </select>
+                    </div>
+                    
+                    <div class="text-left mb-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Voucher Particulars / Notes</label>
+                        <input id="swal-exp-title" type="text" placeholder="e.g., Bought 2 boxes cotton pads" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-pink-500">
+                    </div>
+                    
+                    <div class="text-left">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Voucher Cost Amount (₱)</label>
+                        <input id="swal-exp-amt" type="number" placeholder="0.00" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-pink-500 font-bold">
+                    </div>
+                `,
+          preConfirm: () => {
+            const cat = document.getElementById("swal-exp-cat").value;
+            const notes = document
+              .getElementById("swal-exp-title")
+              .value.trim();
+            const amt =
+              parseFloat(document.getElementById("swal-exp-amt").value) || 0;
+
+            if (!notes || amt <= 0) {
+              Swal.showValidationMessage(
+                "Please fill out all voucher fields correctly!",
+              );
+              return false;
+            }
+            return { category: cat, notes: notes, amount: amt };
+          },
+        }).then((res) => {
+          if (res.isConfirmed) {
+            Swal.fire({
+              title: "Securing Voucher...",
+              background: "#1e293b",
+              color: "#f1f5f9",
+              didOpen: () => {
+                Swal.showLoading();
+              },
+            });
+
+            const payload = {
+              action: "logExpense",
+              payload: res.value,
+            };
+
+            console.log("Sending Expense payload:", payload);
+
+            fetch(APPS_SCRIPT_URL, {
+              method: "POST",
+              body: JSON.stringify(payload),
+            })
+              .then(async (response) => {
+                const text = await response.text();
+
+                console.log("Raw Apps Script response:", text);
+
+                const result = JSON.parse(text);
+
+                return result;
+              })
+              .then((result) => {
+                if (result.status !== "success") {
+                  throw new Error(result.message);
+                }
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, "0");
+                const day = String(now.getDate()).padStart(2, "0");
+                const hours = String(now.getHours()).padStart(2, "0");
+                const minutes = String(now.getMinutes()).padStart(2, "0");
+                const seconds = String(now.getSeconds()).padStart(2, "0");
+                const timestampStr = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
+
+                masterCloudExpenses.push({
+                  date: timestampStr,
+                  category: res.value.category,
+                  notes: res.value.notes,
+                  amount: res.value.amount,
+                });
+
+                Swal.fire({
+                  icon: "success",
+                  title: "Voucher Logged!",
+                  text: "Expense successfully exported and filed inside Google Sheets.",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+
+                fetchDayLedgerRecords();
+              })
+              .catch((err) => {
+                console.error("Voucher submission failure:", err);
+                Swal.fire({
+                  icon: "error",
+                  title: "Network Fault",
+                  text: "Voucher could not connect to Google Sheets.",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+              });
+          }
+        });
+      }
+
+      // --- 4. HIGH-END PRINT REPORT DATA COMPILER PIPELINE ---
+      function executeReportPrintJob() {
+        const selectedDate =
+          document.getElementById("ledger-date-picker").value;
+        const bannerDisplayDate =
+          document.getElementById("ledger-date-title").textContent;
+
+        const filteredTxns = masterCloudTransactions.filter((t) => {
+          const dateField = t.timestamp || t.date || "";
+          return dateField.toString().substring(0, 10) === selectedDate;
+        });
+        const filteredExpenses = masterCloudExpenses.filter((e) => {
+          const dateField = e.date || "";
+          return dateField.toString().substring(0, 10) === selectedDate;
+        });
+
+        // 1. Assign Date and Generation Timestamps
+        document.getElementById("print-lbl-ledger-date").textContent =
+          bannerDisplayDate;
+        document.getElementById("print-lbl-generated-time").textContent =
+          new Date().toLocaleString("en-US");
+
+        // 2. Map Metrics Data Values directly to the new Balance Sheet Table Columns
+        document.getElementById("print-tab-start").textContent =
+          document.getElementById("summary-lbl-start").textContent;
+        document.getElementById("print-tab-sales").textContent =
+          document.getElementById("summary-lbl-grand").textContent;
+        document.getElementById("print-tab-expenses").textContent =
+          document.getElementById("summary-lbl-expenses").textContent;
+        document.getElementById("print-tab-cashbox").textContent =
+          document.getElementById("summary-lbl-box-cash").textContent;
+        document.getElementById("print-tab-netfunds").textContent =
+          document.getElementById("summary-lbl-net-funds").textContent;
+
+        // 3. Map Card 2 Sub-badge splits statistics channels
+        document.getElementById("print-sub-cash").textContent =
+          document.getElementById("summary-lbl-cash").textContent;
+        document.getElementById("print-sub-gcash").textContent =
+          document.getElementById("summary-lbl-gcash").textContent;
+        document.getElementById("print-sub-maya").textContent =
+          document.getElementById("summary-lbl-maya").textContent;
+        document.getElementById("print-sub-card").textContent =
+          document.getElementById("summary-lbl-card").textContent;
+
+        // 4. Extract Daily Shift Remarks Text keeping line break formats
+        const remarksText = document
+          .getElementById("input-ledger-notes")
+          .value.trim();
+        document.getElementById("print-box-remarks").textContent =
+          remarksText ||
+          "No general shift remarks or operational notes added for this day file.";
+
+        // 5. Render rows for the Sales Transactions Ledger Table
+        const txnBody = document.getElementById(
+          "print-table-body-transactions",
+        );
+        txnBody.innerHTML = "";
+        if (filteredTxns.length === 0) {
+          txnBody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; color:#64748b; font-style:italic;">No sales transactions logged for this selected day file.</td></tr>`;
+        } else {
+          filteredTxns.forEach((t, i) => {
+            const tr = document.createElement("tr");
+            const noteText = t.sales_notes || t.notes || "";
+            const noteSnippet = noteText
+              ? `<div style="font-size:8.5px; color:#64748b; margin-top:3px; font-style:italic; font-weight:normal;">📝 Note: ${noteText}</div>`
+              : "";
+
+            // Isolate raw service names comma strings and refactor to strict cell line breaks
+            const rawServicesStr = t.services_rendered || t.services || "";
+            const lineBreakedServices = rawServicesStr.split(", ").join("\n");
+
+            let time = "00:00";
+            if (t.timestamp && t.timestamp.toString().includes("T")) {
+              try {
+                time = t.timestamp.toString().split("T").substring(0, 5);
+              } catch (e) {}
+            } else if (t.time) {
+              time = t.time;
+            }
+
+            tr.innerHTML = `
+                        <td style="text-align:center; font-family:monospace;">${i + 1}</td>
+                        <td style="font-family:monospace; text-align:center;">${time}</td>
+                        <td style="font-weight:bold; color:#0f172a;">${t.customer_name || t.customer || "Walk-In"}</td>
+                        <td>
+                            <div class="preserve-newlines" style="font-weight:500;">${lineBreakedServices}</div>
+                            ${noteSnippet}
+                        </td>
+                        <td style="text-align:right; font-weight:bold; color:#0f172a;">₱${(parseFloat(t.net_total !== undefined ? t.net_total : t.amount) || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                        <td style="text-align:center; font-weight:bold; font-size:8.5px;"><span style="border:1px solid #cbd5e1; padding:2px 4px; border-radius:4px; background:#f8fafc;">${t.payment_method || t.payment || "Cash"}</span></td>
+                    `;
+            txnBody.appendChild(tr);
+          });
+        }
+
+        // 6. Render rows for the Cash Vouchers Expense Log Table
+        const expBody = document.getElementById("print-table-body-expenses");
+        expBody.innerHTML = "";
+        if (filteredExpenses.length === 0) {
+          expBody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:15px; color:#64748b; font-style:italic;">No operational cash voucher expenses recorded for this day.</td></tr>`;
+        } else {
+          filteredExpenses.forEach((e, i) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                        <td style="font-family:monospace; text-align:center;">EXP-${i + 1}</td>
+                        <td style="font-weight:bold; color:#0f172a;">${e.notes || e.particulars || "Expense"}</td>
+                        <td style="color:#334155; font-weight:500;">${e.category || "Supplies"}</td>
+                        <td style="text-align:right; font-weight:bold; color:#b91c1c;">₱${(parseFloat(e.amount) || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                    `;
+            expBody.appendChild(tr);
+          });
+        }
+
+        // 7. Invoke the native hardware print dialog
+        window.print();
+      }
+
+      // --- PHASE 5 CALENDAR ENGINE: GLOBAL DECLARATIONS & SYSTEM ROUTERS ---
+      // --- PHASE 5 CALENDAR ENGINE: DYNAMIC FULL-MONTHLY DASHBOARD ENGINE ---
+      let calendarTrackingStateDate = new Date(); // Active tracking focus calendar month view state object
+      let activeSelectedGridDayStr = getTodayISODate(); // Current sidebar day tracking selection text
+
+      function jumpCalendarToCurrentToday() {
+        calendarTrackingStateDate = new Date();
+        activeSelectedGridDayStr = calendarTrackingStateDate
+          .toISOString()
+          .substring(0, 10);
+        renderMonthlyCalendarViewBoard();
+      }
+
+      function shiftCalendarMonth(directionMultiplier) {
+        calendarTrackingStateDate.setMonth(
+          calendarTrackingStateDate.getMonth() + directionMultiplier,
+        );
+        renderMonthlyCalendarViewBoard();
+      }
+
+      // Main assembly execution controller called on routing tab click
+      function renderMonthlyCalendarViewBoard() {
+        const matrixContainer = document.getElementById(
+          "calendar-monthly-days-matrix",
+        );
+        if (!matrixContainer) return;
+        matrixContainer.innerHTML = "";
+
+        const targetYear = calendarTrackingStateDate.getFullYear();
+        const targetMonth = calendarTrackingStateDate.getMonth(); // 0-indexed integer format
+
+        // Set top text string title description header banner
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        document.getElementById("calendar-month-year-title").textContent =
+          `${monthNames[targetMonth]} ${targetYear}`;
+
+        // Determine day multipliers offsets
+        const firstDayIndex = new Date(targetYear, targetMonth, 1).getDay(); // Sun=0, Mon=1, etc.
+        const totalDaysInMonth = new Date(
+          targetYear,
+          targetMonth + 1,
+          0,
+        ).getDate();
+
+        // 1. Render empty offset cell squares for preceding trailing spaces
+        for (let i = 0; i < firstDayIndex; i++) {
+          const emptyBox = document.createElement("div");
+          emptyBox.className =
+            "bg-slate-900/10 border border-transparent min-h-[65px] rounded-lg opacity-20 pointer-events-none";
+          matrixContainer.appendChild(emptyBox);
+        }
+
+        // 2. Loop and construct active numerical calendar squares matching matrix grid spaces
+        for (let day = 1; day <= totalDaysInMonth; day++) {
+          const cell = document.createElement("div");
+
+          // Compile standardized ISO string text layout template key matching
+          const loopMonthStr = String(targetMonth + 1).padStart(2, "0");
+          const loopDayStr = String(day).padStart(2, "0");
+          const loopCompleteISO = `${targetYear}-${loopMonthStr}-${loopDayStr}`;
+
+          cell.className =
+            "bg-slate-950 border border-slate-800/80 rounded-xl p-2 min-h-[70px] flex flex-col justify-between cursor-pointer transition hover:border-slate-700 group relative select-none text-left";
+
+          // Style highlight tags if cell loops match the currently selected workspace calendar focus state
+          if (loopCompleteISO === activeSelectedGridDayStr) {
+            cell.classList.add(
+              "border-pink-600/60",
+              "bg-pink-950/10",
+              "shadow-md",
+              "shadow-pink-950/5",
+            );
+          }
+
+          // Header cell label number
+          const numLabel = document.createElement("span");
+          numLabel.textContent = day;
+          numLabel.className =
+            "text-xs font-bold text-slate-400 group-hover:text-slate-100 transition";
+
+          // Highlight explicit circle tags if loop parameters run across today's physical calendar day
+          if (loopCompleteISO === new Date().toISOString().substring(0, 10)) {
+            numLabel.className =
+              "text-xs font-black bg-pink-600 text-white w-5 h-5 rounded-full flex items-center justify-center -mt-0.5 -ml-0.5 shadow-sm";
+          }
+          cell.appendChild(numLabel);
+
+          // 3. SCAN MEMORY CACHE TO COUNT RECORD MATCHING BADGES FOR THIS BOX MATRIX CELL
+          const matchedTxns = masterCloudTransactions.filter(
+            (t) =>
+              (t.timestamp || t.date || "").toString().substring(0, 10) ===
+              loopCompleteISO,
+          );
+          const matchedAppts = masterCloudBookings.filter(
+            (b) =>
+              (b.date || "").toString().substring(0, 10) === loopCompleteISO,
+          );
+
+          const indicatorsBox = document.createElement("div");
+          indicatorsBox.className =
+            "flex flex-col gap-0.5 mt-1.5 text-[8.5px] font-bold tracking-wide";
+
+          if (matchedTxns.length > 0) {
+            indicatorsBox.innerHTML += `<div class="text-pink-400 flex items-center gap-1 truncate"><span class="w-1 h-1 rounded-full bg-pink-500 shrink-0"></span>${matchedTxns.length} ${matchedTxns.length === 1 ? "sale" : "sales"}</div>`;
+          }
+          if (matchedAppts.length > 0) {
+            indicatorsBox.innerHTML += `<div class="text-blue-400 flex items-center gap-1 truncate"><span class="w-1 h-1 rounded-full bg-blue-500 shrink-0"></span>${matchedAppts.length} ${matchedAppts.length === 1 ? "appt" : "appts"}</div>`;
+          }
+          cell.appendChild(indicatorsBox);
+
+          // Double click interaction opens our precise hourly timeline pop-up model modal
+          cell.onclick = () => {
+            activeSelectedGridDayStr = loopCompleteISO;
+            renderMonthlyCalendarViewBoard(); // Refresh focus styling outlines instantly
+            updateCalendarSidebarPanelLogs(); // Hydrate right panel data fields
+          };
+
+          matrixContainer.appendChild(cell);
+        }
+
+        updateCalendarSidebarPanelLogs();
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      // --- REFRESHES AND HYDRATES THE RIGHT BREAKDOWN LEDGER DISPLAY SIDEBAR ---
+      function updateCalendarSidebarPanelLogs() {
+        const scroller = document.getElementById("side-panel-records-scroller");
+        if (!scroller) return;
+        scroller.innerHTML = "";
+
+        // Update top text title parameters layout
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        document.getElementById("side-panel-selected-date-lbl").textContent =
+          new Date(activeSelectedGridDayStr + "T00:00:00").toLocaleDateString(
+            "en-US",
+            options,
+          );
+
+        // Sift through local memory cache master lists
+        const dayTxns = masterCloudTransactions.filter(
+          (t) =>
+            (t.timestamp || t.date || "").toString().substring(0, 10) ===
+            activeSelectedGridDayStr,
+        );
+        const dayAppts = masterCloudBookings.filter(
+          (b) =>
+            (b.date || "").toString().substring(0, 10) ===
+            activeSelectedGridDayStr,
+        );
+
+        document.getElementById("side-panel-summary-sub-lbl").textContent =
+          `${dayAppts.length} appointments • ${dayTxns.length} sales`;
+
+        let dayTotalSumAccumulator = 0;
+
+        if (dayTxns.length === 0 && dayAppts.length === 0) {
+          scroller.innerHTML = `
+                    <div class="py-12 text-center text-slate-600 flex flex-col items-center justify-center h-full">
+                        <i data-lucide="folder-open" class="w-8 h-8 stroke-1 mb-2 text-slate-700"></i>
+                        <p class="text-xs font-semibold text-slate-500">No Day Records Logs</p>
+                        <p class="text-[10px] text-slate-600 mt-0.5">Double click grid box for hourly tracking</p>
+                    </div>
+                `;
+          document.getElementById(
+            "side-panel-calculated-total-lbl",
+          ).textContent = "₱0.00";
+          if (window.lucide) {
+            lucide.createIcons();
+          }
+          return;
+        }
+
+        // A. Append POS Sales Records Rows to Side Card Lists
+        // A. Append POS Sales Records Rows to Side Card Lists (With Human Time Formatter)
+        if (dayTxns.length > 0) {
+          const header = document.createElement("p");
+          header.className =
+            "text-[10px] font-black uppercase text-slate-500 tracking-widest border-b border-slate-800 pb-1 mb-2 text-left select-none";
+          header.textContent = "POS Sales";
+          scroller.appendChild(header);
+
+          dayTxns.forEach((t) => {
+            const div = document.createElement("div");
+            div.className =
+              "bg-slate-950/40 border border-slate-800/80 p-3 rounded-xl flex justify-between items-center text-xs text-left mb-2 animate-fadeIn";
+
+            const netVal =
+              parseFloat(t.net_total !== undefined ? t.net_total : t.amount) ||
+              0;
+            dayTotalSumAccumulator += netVal;
+
+            // --- NEW EXTRA-ROBUST H:MM AM/PM CONVERTER ENGINE ---
+            let formattedTimeDisplay = "00:00 AM";
+            try {
+              // Capture text value safely supporting both 'timestamp' and 'time' keys
+              const rawTimestampStr = (t.timestamp || t.time || "")
+                .toString()
+                .trim();
+
+              if (rawTimestampStr.includes(" ")) {
+                // Slices "18:01:07" out of the raw spreadsheet layout space "6/20/2026 18:01:07"
+                const clockSegment = rawTimestampStr.split(" ")[1];
+                const [hourStr, minStr] = clockSegment.split(":");
+
+                let hours = parseInt(hourStr, 10);
+                const ampm = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Formats midnight/noon indices accurately
+
+                formattedTimeDisplay = `${hours}:${minStr} ${ampm}`;
+              } else if (rawTimestampStr.includes("T")) {
+                // Fallback wrapper for alternative standard ISO string text rows profiles
+                const clockSegment = rawTimestampStr.split("T")[1];
+                const [hourStr, minStr] = clockSegment.split(":");
+                let hours = parseInt(hourStr, 10);
+                const ampm = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                formattedTimeDisplay = `${hours}:${minStr} ${ampm}`;
+              } else if (rawTimestampStr.includes(":")) {
+                // Fallback wrapper if cell contains only a clean "HH:MM" text stamp
+                const [hourStr, minStr] = rawTimestampStr.split(":");
+                let hours = parseInt(hourStr, 10);
+                const ampm = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+                formattedTimeDisplay = `${hours}:${minStr} ${ampm}`;
+              }
+            } catch (e) {
+              console.warn("Time compiler extraction skipped:", e);
+              formattedTimeDisplay = "00:00 AM";
+            }
+
+            div.innerHTML = `
+                        <div>
+                            <h5 class="font-bold text-slate-200">${t.customer_name || t.customer || "Walk-In"}</h5>
+                            <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${formattedTimeDisplay} • ${t.payment_method || t.payment || "Cash"}</p>
+                        </div>
+                        <span class="font-black pink-text text-sm">₱${netVal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                    `;
+            scroller.appendChild(div);
+          });
+        }
+
+        // B. Append Reservation Bookings to Side Card Lists (With H:MM AM/PM & Click Toggles)
+        if (dayAppts.length > 0) {
+          const header = document.createElement("p");
+          header.className =
+            "text-[10px] font-black uppercase text-slate-500 tracking-widest border-b border-slate-800 pb-1 mt-3 mb-2 text-left select-none";
+          header.textContent = "Scheduled Bookings";
+          scroller.appendChild(header);
+
+          dayAppts.forEach((b) => {
+            const div = document.createElement("div");
+            div.className =
+              "bg-slate-950/40 border border-slate-800/80 p-3 rounded-xl flex justify-between items-center text-xs text-left mb-2 animate-fadeIn";
+
+            // --- 1. DYNAMIC TIME FORMATTER: CONVERTS HH:MM TO H:MM AM/PM ---
+            let formattedTimeDisplay = b.time || "09:00";
+            try {
+              if (formattedTimeDisplay.includes(":")) {
+                const [hourStr, minStr] = formattedTimeDisplay.split(":");
+                let hours = parseInt(hourStr, 10);
+                const ampm = hours >= 12 ? "PM" : "AM";
+                hours = hours % 12;
+                hours = hours ? hours : 12; // Handle the midnight / noon '0' hour switch logic
+                formattedTimeDisplay = `${hours}:${minStr} ${ampm}`;
+              }
+            } catch (e) {
+              console.warn("Time format compiler exception skipped:", e);
+            }
+
+            // --- 2. DYNAMIC BADGE STYLING COLOR SWITCHBOARD MATRIX ---
+            let statusBadgeClass =
+              "bg-blue-600/10 text-blue-400 border-blue-500/20"; // Confirmed
+            const currentStatusClean = (b.status || "Confirmed")
+              .toString()
+              .trim();
+
+            if (currentStatusClean === "Pending") {
+              statusBadgeClass =
+                "bg-amber-600/10 text-amber-400 border-amber-500/20";
+            } else if (currentStatusClean === "Completed") {
+              statusBadgeClass =
+                "bg-emerald-600/10 text-emerald-400 border-emerald-500/20";
+            }
+
+            // Stringify booking data packet to pass cleanly inside our inline interactive event trigger
+            const stringifiedDataRef = JSON.stringify(b).replace(
+              /"/g,
+              "&quot;",
+            );
+
+            div.innerHTML = `
+                <div>
+                    <h5 class="font-bold text-slate-200">${b.client_name}</h5>
+                    <p class="text-[10px] text-slate-500 font-semibold mt-0.5">${formattedTimeDisplay} • ${b.services_requested}</p>
+                </div>
+                <!-- Interactive Clickable Status Badge Controller Link -->
+                <button onclick="triggerBookingStatusModifierOverlayMenu('${stringifiedDataRef}')" class="${statusBadgeClass} border px-2.5 py-1 rounded-md font-bold text-[9px] uppercase tracking-wide cursor-pointer transition transform active:scale-95 duration-100 hover:brightness-125">
+                    ${currentStatusClean}
+                </button>
+            `;
+            scroller.appendChild(div);
+          });
+        }
+
+        // Update bottom card aggregate dollar display tag
+        document.getElementById("side-panel-calculated-total-lbl").textContent =
+          `₱${dayTotalSumAccumulator.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      // --- NEW: INTERACTIVE BOOKING STATUS MODIFIER MODAL CONTROLLER ---
+      function triggerBookingStatusModifierOverlayMenu(rawBookingJsonString) {
+        const bookingObj = JSON.parse(rawBookingJsonString);
+
+        Swal.fire({
+          title: "Update Booking Status",
+          text: `Modify the active workflow status marker for client: ${bookingObj.client_name}`,
+          background: "#1e293b",
+          color: "#f1f5f9",
+          confirmButtonColor: "#db2777",
+          cancelButtonColor: "#475569",
+          showCancelButton: true,
+          input: "select",
+          inputOptions: {
+            Confirmed: "🟢 Confirmed (Ready)",
+            Pending: "🟡 Pending (Waiting)",
+            Completed: "💎 Completed (Checkout Done)",
+          },
+          inputValue: bookingObj.status || "Confirmed",
+          // FIXED: Uses dedicated theme classes to lock down background and font canvas colors beautifully
+          customClass: {
+            input:
+              "bg-slate-950 text-slate-100 border border-slate-700 rounded-lg p-2 focus:border-pink-500",
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Overwriting Status...",
+              background: "#1e293b",
+              color: "#f1f5f9",
+              didOpen: () => {
+                Swal.showLoading();
+              },
+            });
+
+            const payload = {
+              action: "updateBookingStatus",
+              payload: {
+                date: bookingObj.date,
+                time: bookingObj.time,
+                client_name: bookingObj.client_name,
+                status: result.value,
+              },
+            };
+            console.log("Booking Status Change: ", payload);
+            // Broadcast raw payload straight up to Google Sheets Bookings tab rows cells
+            fetch(APPS_SCRIPT_URL, {
+              method: "POST",
+              body: JSON.stringify(payload),
+            })
+              .then(() => {
+                // Locate and find item matching original keys signature inside local memory list cache array
+                const cacheMatch = masterCloudBookings.find(
+                  (b) =>
+                    b.date === bookingObj.date &&
+                    b.time === bookingObj.time &&
+                    b.client_name === bookingObj.client_name,
+                );
+
+                // Force local memory state update override instantly
+                if (cacheMatch) cacheMatch.status = result.value;
+
+                Swal.fire({
+                  icon: "success",
+                  title: "Status Synchronized",
+                  text: "Booking state permanently altered inside your Google Sheet table!",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+
+                // Re-trigger layout rendering engine loops to repaint colors instantly on screen
+                renderMonthlyCalendarViewBoard();
+              })
+              .catch((err) => {
+                console.error("Booking update fault exception:", err);
+                Swal.fire({
+                  icon: "error",
+                  title: "Network Fault",
+                  text: "Failed to update reservation row state columns in cloud database.",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                });
+              });
+          }
+        });
+      }
+
+      // --- LIVE CLOUD-SYNCHRONIZED RESERVATION BOOKINGS DIALOG WIZARD ---
+      function triggerNewBookingModalPrompt(defaultTimeStr = "09:00") {
+        const activeCalendarSelectedDate = activeSelectedGridDayStr;
+
+        Swal.fire({
+          title: "Schedule Client Appointment",
+          background: "#1e293b",
+          color: "#f1f5f9",
+          confirmButtonColor: "#db2777",
+          cancelButtonColor: "#475569",
+          showCancelButton: true,
+          html: `
+                    <div class="text-left mb-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Customer Client Name</label>
+                        <input id="swal-book-name" type="text" placeholder="e.g., Alice Smith" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div class="text-left mb-3">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Target Service Details</label>
+                        <input id="swal-book-serv" type="text" placeholder="e.g., Classic Lash Extensions" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-pink-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-left">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Appointment Time</label>
+                            <input id="swal-book-time" type="time" value="${defaultTimeStr}" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-pink-500 font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Status Badge</label>
+                            <select id="swal-book-stat" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-pink-500 cursor-pointer">
+                                <option value="Confirmed">🟢 Confirmed</option>
+                                <option value="Pending">🟡 Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                `,
+          preConfirm: () => {
+            const name = document.getElementById("swal-book-name").value.trim();
+            const serv = document.getElementById("swal-book-serv").value.trim();
+            const time = document.getElementById("swal-book-time").value;
+            const stat = document.getElementById("swal-book-stat").value;
+
+            if (!name || !serv) {
+              Swal.showValidationMessage(
+                "Please specify both client name and service particulars!",
+              );
+              return false;
+            }
+            return {
+              client_name: name,
+              services_requested: serv,
+              time: time,
+              date: activeCalendarSelectedDate,
+              status: stat,
+            };
+          },
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Trigger live backdrop processing loading spinner blocker
+            Swal.fire({
+              title: "Securing Appointment...",
+              background: "#1e293b",
+              color: "#f1f5f9",
+              didOpen: () => {
+                Swal.showLoading();
+              },
+            });
+
+            const payload = {
+              action: "saveNewBooking",
+              payload: result.value,
+            };
+
+            // Transmit data packet instantly up to Google Sheets Bookings tab
+            fetch(APPS_SCRIPT_URL, {
+              method: "POST",
+              mode: "no-cors",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            })
+              .then(() => {
+                // Success: Save a backup copy locally to client RAM cache array instantly
+                masterCloudBookings.push(result.value);
+
+                Swal.fire({
+                  icon: "success",
+                  title: "Appointment Filed",
+                  text: `Client ${result.value.client_name} successfully secured inside Google Sheets database!`,
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+
+                // Force real-time re-render calculations sweep locally
+                renderMonthlyCalendarViewBoard();
+              })
+              .catch((err) => {
+                console.error("Booking upload crash fault:", err);
+                Swal.fire({
+                  icon: "error",
+                  title: "Network Fault",
+                  text: "Appointment could not be written to Google Sheets.",
+                  background: "#1e293b",
+                  color: "#f1f5f9",
+                  confirmButtonColor: "#db2777",
+                });
+              });
+          }
+        });
+      }
+
+      // Base Document Environment Entry Point
+      window.addEventListener("DOMContentLoaded", () => {
+        fetchAllMasterDatabaseOnLoad();
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+
+        const today = getTodayISODate();
+
+        const options = {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        };
+        const prettyDateToday = new Date(
+          today + "T00:00:00",
+        ).toLocaleDateString("en-US", options);
+
+        currentSelectedDateISO = today;
+
+        document.getElementById("ledger-date-picker").value = today;
+        document.getElementById("current-date-display").textContent =
+          prettyDateToday;
+
+        fetchDayLedgerRecords();
+      });
+    </script>
+  </body>
+</html>
